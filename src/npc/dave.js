@@ -7,6 +7,36 @@ import { chance, pick } from '../rng.js';
 import { pushTicker, addBP, setHealth, openChoice } from '../util.js';
 import { THEORIES } from '../content/theories.js';
 
+const DAVE_DEPLOY_LINES = [
+  `Birds aren't real. Neither is 'planned' maintenance. I'm on it — twelve minutes.`,
+  `Twelve minutes. Don't touch my toolbox. The plant's torque wrenches report up.`,
+  `The failure interval on this machine is not random. I have a spreadsheet. Twelve minutes.`,
+  `This bearing didn't fail. It was *told* to fail. I know the difference. Twelve minutes.`,
+  `The manufacturer's tolerances are written to produce exactly this failure at exactly this interval. I use my own numbers. Twelve minutes.`,
+  `Every machine in this plant fails on schedule. Not 'a' schedule — THE schedule. I've mapped it. Twelve minutes.`,
+  `The grease in that machine is third-party supply-chain grease. Factory-spec grease is a subscription model for downtime. Twelve minutes.`,
+  `I'm photographing the housing before I open it. I photograph everything. Ask me why later. Actually don't — twelve minutes.`,
+  `The chip pile birds stopped landing three weeks ago. They knew. I knew. Twelve minutes.`,
+  `The 'approved vendor' components in this machine are sized to fail at exactly this interval. I have the originals. Twelve minutes.`,
+  `I already know what I'll find in there. I always know. That's the tell. Twelve minutes.`,
+  `Contrails were unusually heavy this morning. I logged it. Make of that what you will. Twelve minutes.`,
+];
+
+const DAVE_FIX_LINES = [
+  `Fixed. Torqued to real specs. Not the brochure specs. Never the brochure specs.`,
+  `Running. I found a bird band in the housing. I photographed it. I've seen this before.`,
+  `Online. The wear pattern on that shaft is consistent with a 90-day induced failure cycle. I've logged it.`,
+  `Fixed. The failed bearing has a serial number I've seen on three other machines. It's in my truck now.`,
+  `Running. Replaced the approved-vendor part with my personal stock. You'll notice it lasts longer. Notice that.`,
+  `Done. There was a GPS module zip-tied to the frame. I left it there. Let them think we haven't noticed.`,
+  `Online. The lubrication was off-spec by precisely the margin that produces precisely this failure interval. Precision like that is not an accident.`,
+  `Fixed. And I swept the area. The new safety poster 'they' put up last month faces directly at this machine. That is not interior design.`,
+  `Running. The old part is in my truck. I'll tell you what I find when I take it apart. You will not be ready for it.`,
+  `Back up. Third time this quarter. Every 73 days. You want to tell me 73 is random? 73 is a maintenance contract for someone who isn't us.`,
+  `Fixed. I took photos of the housing before, during, and after. The drill marks from the last time someone was in here are not mine.`,
+  `Online. Planned maintenance is a myth invented by the parts industry. What I just did is real maintenance. There's a difference.`,
+];
+
 export function deployDave(state, machineId) {
   const d = state.npcs.dave;
   const m = state.plant.machines[machineId];
@@ -18,7 +48,7 @@ export function deployDave(state, machineId) {
   m.repairEta = d.etaTicks;
   pushTicker(state, {
     speaker: 'DAVE',
-    text: `Dave is on the ${BALANCE.MACHINES[machineId].label}. "Twelve minutes. Don't let anyone 'they' sent near my toolbox."`,
+    text: `Dave is on the ${BALANCE.MACHINES[machineId].label}. "${pick(state, DAVE_DEPLOY_LINES)}"`,
   });
 }
 
@@ -46,7 +76,7 @@ export function tickDave(state) {
       m.flavor = 'nominal';
       state.stats.daveFixes++;
       addBP(state, 'RELIEF_SMALL_VICTORY', -BALANCE.BP.SMALL_VICTORY);
-      pushTicker(state, { speaker: 'DAVE', text: `${BALANCE.MACHINES[m.id].label} is fixed. Properly. With torque specs "they" don't want published.` });
+      pushTicker(state, { speaker: 'DAVE', text: `${BALANCE.MACHINES[m.id].label}: ${pick(state, DAVE_FIX_LINES)}` });
       d.target = null;
 
       if (chance(state, BALANCE.DAVE.MONOLOGUE_P)) {

@@ -28,9 +28,9 @@ export function buildMachineGrid(onDeploy) {
       <div class="m-status">RUNNING</div>
       <div class="m-flavor"></div>
       <div class="m-deploy">
-        <button data-npc="terry" data-m="${id}" title="Terry: instant, $600">T</button>
-        <button data-npc="dave" data-m="${id}" title="Dave: 12 min, $400, conversation risk">D</button>
-        <button data-npc="chris" data-m="${id}" title="Chris: $0* — the asterisk is doing a lot of work">C $0*</button>
+        <button data-npc="terry" data-m="${id}" title="Terry: instant, $600">TERRY</button>
+        <button data-npc="dave" data-m="${id}" title="Dave: 12 min, $400, conversation risk">DAVE</button>
+        <button data-npc="chris" data-m="${id}" title="Chris: $0* — the asterisk is doing a lot of work">CHRIS $0*</button>
       </div>
       ${i < 5 ? '<span class="flow">▶</span>' : ''}
       <span class="m-chip hidden"></span>`;
@@ -80,10 +80,10 @@ export function render(state) {
         || state.meta.tick < state.flags.deploymentsLockedUntil;
       if (btn.dataset.npc === 'terry') {
         const c = m.status === 'CHRISED' ? BALANCE.TERRY.COST * 1.5 : BALANCE.TERRY.COST;
-        btn.textContent = `T $${c}`;
+        btn.textContent = `TERRY $${c}`;
       } else if (btn.dataset.npc === 'dave') {
         const c = m.status === 'CHRISED' ? BALANCE.DAVE.COST * 1.5 : BALANCE.DAVE.COST;
-        btn.textContent = `D $${c}`;
+        btn.textContent = `DAVE $${c}`;
       }
     });
   });
