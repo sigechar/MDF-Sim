@@ -127,6 +127,20 @@ export function adjacentMachines(id) {
   return out;
 }
 
+// Rolling production rate. The window is 60 ticks = 1 in-game hour, so the
+// sum IS msf/hr. Early in the shift it extrapolates, optimistically, like Kevin.
+export function msfPerHour(state) {
+  const w = state.resources.rateWindow || [];
+  if (w.length === 0) return 0;
+  const sum = w.reduce((a, b) => a + b, 0);
+  return w.length >= BALANCE.RATE.WINDOW ? sum : (sum / w.length) * BALANCE.RATE.WINDOW;
+}
+
+// The hourly rate the target arithmetic demands. The arithmetic does not care.
+export function requiredMsfPerHour(state) {
+  return BALANCE.TARGETS[state.meta.difficulty] / (BALANCE.TICKS_PER_SHIFT / 60);
+}
+
 export function money(n) {
   const sign = n < 0 ? '-' : '';
   return `${sign}$${Math.abs(Math.round(n)).toLocaleString('en-US')}`;

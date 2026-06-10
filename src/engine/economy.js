@@ -44,7 +44,7 @@ export function runEconomy(state) {
     } else {
       const subject = PACE_SUBJECTS[Math.min(state.flags.paceFailStreak - 1, PACE_SUBJECTS.length - 1)];
       addBP(state, 'STRESS_CORPORATE_PACE', BALANCE.STRESS.CORPORATE_PACE);
-      pushTicker(state, { channel: 'EMAIL', severity: 'WARN', text: `CORPORATE: "${subject}" — production pace ${Math.round(state.resources.boardsProduced)}/${Math.round(expectedPace)} m³.` });
+      pushTicker(state, { channel: 'EMAIL', severity: 'WARN', text: `CORPORATE: "${subject}" — production pace ${Math.round(state.resources.boardsProduced)}/${Math.round(expectedPace)} msf.` });
     }
   } else {
     state.flags.paceFailStreak = 0;

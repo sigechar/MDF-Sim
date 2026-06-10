@@ -129,6 +129,7 @@ function wire() {
     ['btn-fiber', 'BUY_FIBER'], ['btn-rush', 'RUSH_FIBER'], ['btn-resin', 'BUY_RESIN'],
     ['btn-calibrate', 'CALIBRATE'], ['btn-cleanup', 'CLEANUP'], ['btn-purge', 'PURGE'],
     ['btn-coffee', 'COFFEE'], ['btn-scream', 'SCREAM'],
+    ['btn-rate-up', 'RATE_UP'], ['btn-rate-down', 'RATE_DOWN'],
   ];
   for (const [id, type] of simple) {
     $(id).addEventListener('click', e => act({ type }, e.currentTarget));
@@ -167,7 +168,7 @@ function wire() {
   $('btn-retry').addEventListener('click', () => newGame(state.meta.seed, state.meta.difficulty));
 
   $('difficulty-input').addEventListener('change', e => {
-    $('brief-target').textContent = `${BALANCE.TARGETS[e.target.value]} m³`;
+    $('brief-target').textContent = `${BALANCE.TARGETS[e.target.value]} msf`;
   });
 
   document.addEventListener('visibilitychange', () => { if (document.hidden) saveGame(); });

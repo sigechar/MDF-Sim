@@ -11,7 +11,7 @@ const STEPS = [
   },
   {
     sel: '#pace-wrap', title: 'THE NUMBER',
-    copy: 'Corporate wants this many cubic meters of board by morning. Cyan bar: what you\'ve made. Amber notch: where you SHOULD be by now. When cyan trails amber, corporate sends emails. The emails raise your blood pressure. This is called "alignment."',
+    copy: 'Corporate wants this many msf of board by morning — thousand square feet; board people measure area, it\'s a whole thing. Cyan bar: what you\'ve made. Amber notch: where you SHOULD be by now. The msf/hr readout is your live rate; Kevin watches it so he doesn\'t have to watch you. When it runs low, he will let you know. Indirectly. At length.',
   },
   {
     sel: '#hdr-cash', title: 'THE BUDGET',
@@ -42,8 +42,8 @@ const STEPS = [
     copy: 'Live status on all five of them. The little bars matter: Terry\'s is stamina, Dave\'s is trust. When Terry\'s hits 30 he takes a 45-minute break that no force in this universe can shorten. Plan around it. Everyone else does.',
   },
   {
-    sel: '#panel-e', title: 'SUPPLIES',
-    copy: 'Fiber feeds the line, resin glues it together. QUALITY decides how much of your board actually counts — CALIBRATE buys some back. HOUSEKEEPING is the glue pileup again, because it earned two gauges.',
+    sel: '#panel-e', title: 'SUPPLIES (AND THE LEVER)',
+    copy: 'Fiber feeds the line, resin glues it together. QUALITY decides how much of your board actually counts — CALIBRATE buys some back. HOUSEKEEPING is the glue pileup again, because it earned two gauges. And LINE RATE: push it and the boards come faster. So do the breakdowns. The machines keep their own ledger, and they always collect.',
   },
   {
     sel: '#panel-f', title: 'THE RADIO',

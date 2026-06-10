@@ -18,10 +18,10 @@ export const INCIDENTS = [
     apply(state) {
       state.resources.resin = Math.max(0, state.resources.resin - BALANCE.EVENTS.LEAK_RESIN_LOSS);
       addGlue(state, BALANCE.GLUE.LEAK_AMOUNT);
-      pushTicker(state, { channel: 'ALARM', speaker: 'PLANT', severity: 'WARN', text: 'RESIN LEAK at the blender. 1.5 tonnes are exploring the floor. The floor is becoming a commitment.' });
+      pushTicker(state, { channel: 'ALARM', speaker: 'PLANT', severity: 'WARN', text: 'RESIN LEAK by the dryers. 1.5 tonnes are exploring the floor. The floor is becoming a commitment.' });
       openChoice(state, {
         id: `leak_${state.meta.tick}`, kind: 'RESIN_LEAK', source: 'incident', requiresAuthority: false,
-        prompt: `RADIO: Resin leak at the blender. Cleanup crew is available for ${money(BALANCE.EVENTS.LEAK_CLEANUP_COST)}, or it can "keep" — which is what the last guy said, and the floor still remembers him.`,
+        prompt: `RADIO: Resin leak by the dryers. Cleanup crew is available for ${money(BALANCE.EVENTS.LEAK_CLEANUP_COST)}, or it can "keep" — which is what the last guy said, and the floor still remembers him.`,
         options: [`Pay cleanup crew (${money(BALANCE.EVENTS.LEAK_CLEANUP_COST)})`, "It'll keep"],
         timerTicks: 15, timeoutOption: 1,
       });

@@ -16,7 +16,8 @@
     <span id="hdr-clock" class="lcd">18:00</span>
     <div id="pace-wrap" title="production vs corporate target">
       <div id="pace-bar"><div id="pace-fill"></div><div id="pace-mark"></div></div>
-      <span id="pace-label" class="lcd small">0 / 240 m³</span>
+      <span id="pace-label" class="lcd small">0 / 240 msf</span>
+      <span id="rate-lcd" class="lcd small" title="rolling hourly rate — Kevin watches this number so he doesn't have to watch you">0.0 msf/hr</span>
     </div>
     <span id="hdr-cash" class="lcd">$25,000</span>
     <div id="speed-ctl">
@@ -102,6 +103,13 @@
       <button id="btn-cleanup" class="act small">CLEANUP CREW <span class="price">$1,200</span></button>
       <button id="btn-purge" class="act small hidden">PURGE FIBER <span class="price">$1,500</span></button>
     </div>
+    <div class="res" title="faster boards, faster breakdowns — the machines keep their own ledger">
+      <span class="res-label">LINE RATE</span>
+      <span id="rate-mode" class="lcd small">STANDARD</span>
+      <span></span>
+      <button id="btn-rate-up" class="act small">PUSH THE LINE ▲</button>
+      <button id="btn-rate-down" class="act small">EASE OFF ▼</button>
+    </div>
   </section>
 
   <!-- F. RADIO DISPATCH TICKER -->
@@ -140,7 +148,7 @@
   <div class="panel big-modal">
     <h1>MDF-SIM</h1>
     <h2>“PRESSED FOR TIME” — an industrial sanity simulator</h2>
-    <p class="briefing">18:00. You are <strong>Spencer</strong>, shift leader, D-Crew. Corporate wants <strong id="brief-target">240 m³</strong> of board by 06:00.
+    <p class="briefing">18:00. You are <strong>Spencer</strong>, shift leader, D-Crew. Corporate wants <strong id="brief-target">240 msf</strong> of board by 06:00.
     Your superintendent tells puns and hides. Your maintenance superintendent makes things worse with total confidence.
     Your best millwright is mortal. Your other millwright thinks the bearings are sabotaged by globalists.
     A rival shift leader would like a word about some surplus fiber.<br><br>Your blood pressure is a resource. Spend it wisely.</p>
@@ -148,9 +156,9 @@
       <label>SEED <input id="seed-input" type="number"></label>
       <label>DIFFICULTY
         <select id="difficulty-input">
-          <option value="TRAINEE">TRAINEE (180 m³)</option>
-          <option value="SHIFT_LEADER" selected>SHIFT LEADER (240 m³)</option>
-          <option value="CORPORATE_TARGETS">CORPORATE TARGETS (300 m³)</option>
+          <option value="TRAINEE">TRAINEE (180 msf)</option>
+          <option value="SHIFT_LEADER" selected>SHIFT LEADER (240 msf)</option>
+          <option value="CORPORATE_TARGETS">CORPORATE TARGETS (300 msf)</option>
         </select>
       </label>
     </div>

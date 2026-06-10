@@ -9,11 +9,19 @@ import {
 import { DEGRADED_FLAVOR, BREAKDOWN_LINES } from '../content/flavor.js';
 
 export function runProduction(state) {
+  const before = state.resources.boardsProduced;
   produce(state);
+  const w = state.resources.rateWindow ?? (state.resources.rateWindow = []);
+  w.push(state.resources.boardsProduced - before);
+  if (w.length > BALANCE.RATE.WINDOW) w.shift();
   degrade(state);
   rollBreakdowns(state);
   driftQuality(state);
   accumulateGlue(state);
+}
+
+function rateLevel(state) {
+  return BALANCE.RATE.LEVELS[state.plant.rateIndex ?? BALANCE.RATE.START_INDEX];
 }
 
 function chainAlive(state) {
@@ -31,7 +39,7 @@ function produce(state) {
   if (!chainAlive(state)) return;
 
   const P = BALANCE.PRODUCTION;
-  let rawRate = P.BASE_RATE;
+  let rawRate = P.BASE_RATE * rateLevel(state).tp;
   for (const id of BALANCE.CHAIN) {
     const m = state.plant.machines[id];
     rawRate *= m.throughputMod * (m.status === 'DEGRADED' ? BALANCE.MACHINES[id].degradedTp : 1);
@@ -65,7 +73,7 @@ function degrade(state) {
     const m = state.plant.machines[id];
     if (m.status !== 'RUNNING' && m.status !== 'DEGRADED') continue;
 
-    let wear = BALANCE.MACHINES[id].wear;
+    let wear = BALANCE.MACHINES[id].wear * rateLevel(state).wear;
     if (m.status === 'DEGRADED') wear *= BALANCE.BREAKDOWN.DEGRADED_WEAR_MOD;
     if (id === 'SANDER' && state.meta.tick < state.flags.sanderWearBoostUntil) {
       wear *= BALANCE.TOD.SANDER_WEAR_BOOST; // Tod's wet fiber, chewing the belt
@@ -96,6 +104,7 @@ function rollBreakdowns(state) {
     if (m.status !== 'RUNNING' && m.status !== 'DEGRADED') continue;
 
     let p = BALANCE.BREAKDOWN.BASE
+      * rateLevel(state).breakdown
       * (2.0 - m.health / 100)
       * (m.status === 'DEGRADED' ? BALANCE.BREAKDOWN.DEGRADED_MOD : 1)
       * BALANCE.BREAKDOWN.DIFF[state.meta.difficulty];
@@ -136,8 +145,8 @@ function accumulateGlue(state) {
 
   // Escalation ticker series (spec §14.4) — each fires exactly once
   const milestones = [
-    [70, 'housekeeping note: the floor near the blender is now "tacky." like a dance floor. a bad one.', 'WARN', 'RADIO'],
-    [80, 'a forklift is parked by the blender. the forklift has been parked by the blender for a while. the forklift may now BE part of the blender.', 'WARN', 'RADIO'],
+    [70, 'housekeeping note: the floor near the dryers is now "tacky." like a dance floor. a bad one.', 'WARN', 'RADIO'],
+    [80, 'a forklift is parked by the dryers. the forklift has been parked by the dryers for a while. the forklift may now BE part of the dryers.', 'WARN', 'RADIO'],
     [90, 'the door to the resin room opens at a new angle. the angle is "partially."', 'CRIT', 'ALARM'],
     [95, 'maintenance requests everyone stop describing the plant as "one big board." it is, at present, accurate, and morale-sensitive.', 'CRIT', 'ALARM'],
   ];

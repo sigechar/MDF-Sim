@@ -2,11 +2,11 @@
 // never disagree with the engine because it never stores its own truth.
 
 import { BALANCE } from '../balance.js';
-import { clockString, money } from '../util.js';
+import { clockString, money, msfPerHour, requiredMsfPerHour } from '../util.js';
 import { bpZone } from '../engine/bp.js';
 import { fiberPrice, rushFiberPrice, resinPrice } from '../engine/economy.js';
 import { ENDINGS } from '../engine/winloss.js';
-import { SPRITES } from './sprites.js';
+import { SPRITES, MACHINE_GRAPHICS } from './sprites.js';
 
 const $ = id => document.getElementById(id);
 
@@ -37,6 +37,7 @@ export function buildMachineGrid(onDeploy) {
       <div class="hbar"><div class="hfill" style="width:100%"></div></div>
       <div class="m-status">RUNNING</div>
       <div class="m-flavor"></div>
+      <span class="m-anim">${MACHINE_GRAPHICS[id]}</span>
       <div class="m-deploy">
         <button data-npc="terry" data-m="${id}" title="Terry: instant, $600">TERRY</button>
         <button data-npc="dave" data-m="${id}" title="Dave: 12 min, $400, conversation risk">DAVE</button>
@@ -81,7 +82,13 @@ export function render(state) {
   const pace = Math.min(100, (R.boardsProduced / target) * 100);
   $('pace-fill').style.width = `${pace}%`;
   $('pace-mark').style.left = `${Math.min(100, (state.meta.shiftClock / BALANCE.TICKS_PER_SHIFT) * 100)}%`;
-  $('pace-label').textContent = `${R.boardsProduced.toFixed(0)} / ${target} m³`;
+  $('pace-label').textContent = `${R.boardsProduced.toFixed(0)} / ${target} msf`;
+  const rate = msfPerHour(state);
+  const needed = requiredMsfPerHour(state);
+  const rateEl = $('rate-lcd');
+  rateEl.textContent = `${rate.toFixed(1)} msf/hr`;
+  rateEl.style.color = rate >= needed ? '' : rate >= needed * BALANCE.KEVIN.RATE_NAG.FRACTION
+    ? 'var(--amber)' : 'var(--red)';
 
   // klaxon
   const highs = state.plant.alarms.filter(a => a.severity === 'HIGH').length;
@@ -289,6 +296,12 @@ function renderResources(state) {
   $('btn-cleanup').disabled = R.cash < BALANCE.GLUE.CLEANUP_COST;
   $('btn-purge').classList.toggle('hidden', !state.flags.contaminated);
   $('btn-purge').disabled = R.cash < BALANCE.TOD.PURGE_COST;
+  const ri = state.plant.rateIndex ?? BALANCE.RATE.START_INDEX;
+  const mode = $('rate-mode');
+  mode.textContent = BALANCE.RATE.LEVELS[ri].label;
+  mode.style.color = ri === 2 ? 'var(--red)' : ri === 0 ? 'var(--cyan)' : '';
+  $('btn-rate-up').disabled = ri >= BALANCE.RATE.LEVELS.length - 1;
+  $('btn-rate-down').disabled = ri <= 0;
 }
 
 let lastTickerLen = -1;
@@ -326,8 +339,8 @@ export function renderEnd(state) {
   $('end-grade').textContent = over.win ? `SHIFT GRADE: ${over.grade}` : 'SHIFT GRADE: N/A (see above)';
   const s = state.stats;
   const rows = [
-    ['Board produced', `${state.resources.boardsProduced.toFixed(1)} m³`],
-    ['Board scrapped', `${state.resources.boardsScrapped.toFixed(1)} m³`],
+    ['Board produced', `${state.resources.boardsProduced.toFixed(1)} msf`],
+    ['Board scrapped', `${state.resources.boardsScrapped.toFixed(1)} msf`],
     ['Final cash', money(state.resources.cash)],
     ['Peak blood pressure', s.peakBP.toFixed(0)],
     ['Puns endured', `${s.punsEndured} (${s.woodPunsEndured} wood-related)`],
@@ -341,7 +354,7 @@ export function renderEnd(state) {
   ];
   $('end-stats').innerHTML = rows.map(([k, v]) => `<span class="k">${k}</span><span>${v}</span>`).join('');
   $('end-dayshift').textContent = over.win
-    ? `Day shift arrives. First words: "What is THAT by the blender?" (glue pileup at handover: ${state.plant.gluePileup.toFixed(0)}%.)`
+    ? `Day shift arrives. First words: "What is THAT by the dryers?" (glue pileup at handover: ${state.plant.gluePileup.toFixed(0)}%.)`
     : `Glue pileup at time of incident: ${state.plant.gluePileup.toFixed(0)}%. Someone will have to explain that. It will not be Kevin.`;
   $('end-overlay').classList.remove('hidden');
 }

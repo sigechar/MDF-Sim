@@ -5,7 +5,7 @@ export const RUNNING_FLAVOR = ['nominal', 'humming', 'behaving', 'suspiciously f
 
 export const DEGRADED_FLAVOR = {
   REFINER: 'screaming slightly',
-  BLENDER: 'weeping resin',
+  BLENDER: 'running a low fever',
   FORMER: 'drifting philosophically',
   PRESS: 'breathing wrong',
   COOLER: 'sweating',
@@ -19,9 +19,9 @@ export const BREAKDOWN_LINES = {
     'REFINER DOWN. Dave was three feet away and said "told you" before it finished stopping.',
   ],
   BLENDER: [
-    'BLENDER DOWN. The resin is going somewhere. The somewhere is the floor.',
-    'BLENDER DOWN. It is now a very expensive bucket.',
-    'BLENDER DOWN. Smells like a craft fair held inside a chemistry exam.',
+    'DRYERS DOWN. The fiber is wet. The fiber intends to stay wet. Moisture has seized the means of production.',
+    'DRYERS DOWN. They are now, technically, just large rooms.',
+    'DRYERS DOWN. Smells like a craft fair held inside a chemistry exam.',
   ],
   FORMER: [
     'FORMING LINE DOWN. The mat is forming opinions instead of boards.',

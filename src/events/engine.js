@@ -205,6 +205,20 @@ export function applyAction(state, action) {
       pushTicker(state, { speaker: 'SPENCER', text: `[PURGE] ${money(B.TOD.PURGE_COST)}. Tod's fiber has been escorted from the system. It did not go quietly. Nothing Tod touches goes quietly.` });
       break;
     }
+    case 'RATE_UP':
+    case 'RATE_DOWN': {
+      const dir = action.type === 'RATE_UP' ? 1 : -1;
+      const next = clamp((state.plant.rateIndex ?? B.RATE.START_INDEX) + dir, 0, B.RATE.LEVELS.length - 1);
+      if (next === state.plant.rateIndex) return;
+      state.plant.rateIndex = next;
+      const lines = {
+        OVERDRIVE: '[LINE RATE: OVERDRIVE] Everything now happens faster. Including the reasons to stop.',
+        STANDARD: '[LINE RATE: STANDARD] The machines accept your apology. The machines remember.',
+        REDUCED: '[LINE RATE: REDUCED] The line slows to a contemplative pace. The bearings purr. Corporate squints.',
+      };
+      pushTicker(state, { speaker: 'SPENCER', severity: next === 2 ? 'WARN' : 'INFO', text: lines[B.RATE.LEVELS[next].label] });
+      break;
+    }
     case 'COFFEE': {
       addBP(state, 'RELIEF_COFFEE', -B.BP.COFFEE_RELIEF);
       sp.caffeineTimers.push(state.meta.tick + B.BP.CAFFEINE_DECAY_TICKS);

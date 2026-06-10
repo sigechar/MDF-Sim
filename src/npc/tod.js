@@ -37,14 +37,14 @@ const TRADES = [
   },
   {
     key: 'BUY_BOARDS',
-    headline: `heyyy Spencer. I'll buy 15 m³ off your count, cash now, $6,000. C-Crew's a little behind. This one's totally clean, I swear on Kevin.`,
+    headline: `heyyy Spencer. I'll buy 15 msf off your count, cash now, $6,000. C-Crew's a little behind. This one's totally clean, I swear on Kevin.`,
     accept: 'Deal.', decline: 'Hard pass, Tod.',
     cost: 0, defectP: 0, // his only honest deal is the worst one: it sells your WIN metric
     available: (s) => s.resources.boardsProduced >= 15,
     apply(state) {
       state.resources.cash += 6000;
       state.resources.boardsProduced -= 15;
-      pushTicker(state, { speaker: 'TOD', text: 'heyyy thanks. fifteen cubes off your count. it was the honest deal. that should worry you about the other ones.' });
+      pushTicker(state, { speaker: 'TOD', text: 'heyyy thanks. fifteen msf off your count. it was the honest deal. that should worry you about the other ones.' });
     },
   },
   {
@@ -150,7 +150,7 @@ export function detonateDefect(state, type) {
       addGlue(state, 6);
       pushTicker(state, {
         speaker: 'PLANT', severity: 'CRIT',
-        text: 'BLENDER DOWN. The tote did not fall off a truck. The tote was the truck\'s problem and now it is yours.',
+        text: 'DRYERS DOWN. The tote did not fall off a truck. The tote was the truck\'s problem and now it is yours.',
       });
       break;
     }

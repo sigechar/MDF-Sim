@@ -127,7 +127,7 @@ function main() {
   console.log(`\n=== MDF-SIM headless harness ===`);
   console.log(`bot: ${BOT} | runs: ${RUNS} | base seed: ${BASE_SEED}`);
   console.log(`win rate: ${((wins / RUNS) * 100).toFixed(1)}%`);
-  console.log(`avg boards: ${(totalBoards / RUNS).toFixed(1)} m³ (target ${BALANCE.TARGETS.SHIFT_LEADER})`);
+  console.log(`avg boards: ${(totalBoards / RUNS).toFixed(1)} msf (target ${BALANCE.TARGETS.SHIFT_LEADER})`);
   if (wins > 0) console.log(`avg time-in-RED on wins: ${((redTicks / wins) * 100).toFixed(1)}%`);
   console.log(`loss-vector histogram:`, endings);
   console.log(`kevin cowardice violations (must be 0): ${cowardiceViolations}`);

@@ -117,8 +117,8 @@ interface GameState {
     cash: number;              // USD. Start 25_000. Bankruptcy threshold: see §10
     woodFiber: number;         // tonnes. Start 80. Cap 200 (silo capacity)
     resin: number;             // tonnes UF resin. Start 12. Cap 30 (tank capacity)
-    boardsProduced: number;    // m³ of saleable MDF this shift. WIN METRIC.
-    boardsScrapped: number;    // m³ rejected. Tracked for end-screen shaming.
+    boardsProduced: number;    // msf of saleable MDF this shift. WIN METRIC.
+    boardsScrapped: number;    // msf rejected. Tracked for end-screen shaming.
   };
 
   plant: {
@@ -159,12 +159,12 @@ interface GameState {
 
 | Resource | Symbol | Range | Start | Primary sources | Primary sinks |
 |----------|--------|-------|-------|-----------------|---------------|
-| Cash | `$` | -∞..∞ | 25,000 | Board sales (auto, per m³) | Fiber/resin purchases, repairs, Tod trades, event fines |
+| Cash | `$` | -∞..∞ | 25,000 | Board sales (auto, per msf) | Fiber/resin purchases, repairs, Tod trades, event fines |
 | Wood Fiber | `FBR` | 0..200 t | 80 | Purchases, Tod trades | Refiner consumption, contamination dumps |
 | Resin | `RSN` | 0..30 t | 12 | Purchases | Blender consumption, leak events |
 | Plant Uptime | `UPT` | 0..100 % | 92 | Repairs, Terry | Breakdowns, Chris, neglect |
 | Board Quality | `QLT` | 0..100 | 85 | Calibration, good resin ratio | Drift, contaminated fiber, Chris "tuning" |
-| Production | `m³` | 0..∞ | 0 | Press output × quality gate | (none — monotonic) |
+| Production | `msf` | 0..∞ | 0 | Press output × quality gate | (none — monotonic) |
 | Blood Pressure | `BP` | 60..240 | 118 | EVERY HUMAN IN THE BUILDING | Coffee, venting, quiet minutes, small victories |
 
 **Design note (P3):** Cash, Fiber, and Resin are *logistics* problems. Uptime and Quality are
@@ -194,8 +194,8 @@ The plant is a 6-station serial production chain. Boards only flow if **every** 
 station is `RUNNING` or `DEGRADED`.
 
 ```
- FIBER SILO → [M1 REFINER] → [M2 BLENDER] → [M3 FORMING LINE] →
- → [M4 HOT PRESS] → [M5 BOARD COOLER] → [M6 SANDER/SAW] → SALEABLE m³
+ FIBER SILO → [M1 REFINER] → [M2 DRYERS] → [M3 FORMING LINE] →
+ → [M4 HOT PRESS] → [M5 BOARD COOLER] → [M6 SANDER/SAW] → SALEABLE msf
 ```
 
 ### 5.1 Machine Schema
@@ -227,7 +227,7 @@ interface Machine {
 | Machine | Base wearRate/tick | Breakdown weight | DEGRADED throughput | Special |
 |---------|-------------------|------------------|--------------------|---------|
 | M1 REFINER | 0.030 | 20% | 0.65 | Dave's favorite sabotage-theory target |
-| M2 BLENDER | 0.025 | 15% | 0.70 | Resin leaks here; feeds `gluePileup` |
+| M2 DRYERS (id: BLENDER) | 0.025 | 15% | 0.70 | Resin leaks here; feeds `gluePileup` |
 | M3 FORMER | 0.020 | 10% | 0.75 | Quality drift source |
 | M4 HOT PRESS | 0.045 | **30%** | 0.55 | The diva. Highest wear, highest drama. Fire risk events |
 | M5 COOLER | 0.015 | 10% | 0.80 | Cheap fixes; Chris is weirdly drawn to it |
@@ -263,13 +263,13 @@ machine states so the HMI can never lie (P2).
 
 ## 6. Resource Economy & Formulas
 
-### 6.1 Production Rate (m³ of saleable board per tick)
+### 6.1 Production Rate (msf of saleable board per tick)
 
 ```
 chainAlive   = all machines status ∈ {RUNNING, DEGRADED}        // boolean gate
-rawRate      = BASE_RATE × Π(throughputMod_i)                   // BASE_RATE = 0.55 m³/tick
-fiberDraw    = rawRate × FIBER_PER_M3        // 0.72 t/m³
-resinDraw    = rawRate × RESIN_PER_M3        // 0.085 t/m³
+rawRate      = BASE_RATE × Π(throughputMod_i)                   // BASE_RATE = 0.55 msf/tick
+fiberDraw    = rawRate × FIBER_PER_M3        // 0.72 t/msf
+resinDraw    = rawRate × RESIN_PER_M3        // 0.085 t/msf
 
 if (!chainAlive || woodFiber < fiberDraw || resin < resinDraw) → rawRate = 0
    (starvation also: BP +0.5/tick STRESS_STARVED, ticker warns "FORMER RUNNING ON FUMES")
@@ -280,13 +280,13 @@ scrapped     = rawRate × (1 - qualityGate)
 
 boardsProduced += saleable
 boardsScrapped += scrapped
-cash           += saleable × BOARD_PRICE      // $310 / m³, paid instantly (corporate
+cash           += saleable × BOARD_PRICE      // $310 / msf, paid instantly (corporate
                                               // "live invoicing pilot program" — the one
                                               // corporate initiative that accidentally works)
 ```
 
-**Full-shift theoretical max** ≈ 0.55 × 720 = 396 m³. **Win target: 240 m³** (SHIFT_LEADER).
-The 156 m³ of slack is the entire human-dysfunction budget. Every Kevin pun, Terry break,
+**Full-shift theoretical max** ≈ 0.55 × 720 = 396 msf. **Win target: 240 msf** (SHIFT_LEADER).
+The 156 msf of slack is the entire human-dysfunction budget. Every Kevin pun, Terry break,
 and Chris intervention spends it.
 
 ### 6.2 Procurement (player actions, instant, button-per-resource)
@@ -630,7 +630,7 @@ delay so the causality is deniable — Tod's signature move).
 |---|---|---|---|---|
 | "Surplus fiber, 20t, half price" | +20t fiber, -$1,800 | Wet/contaminated fiber | 55% | quality contaminationPenalty active until player buys a $1,500 PURGE; SANDER wear ×3 for 30 ticks; `STRESS_TOD_BURNED` +14 |
 | "Resin tote, fell off a truck*" | +4t resin, -$2,000 | Off-spec resin | 50% | BLENDER → DOWN, gluePileup +6, ticker: "the tote did not fall off a truck. the tote was the truck's problem and now it is yours" |
-| "I'll buy 15 m³ off your count, cash now" | +$6,000, boardsProduced -15 | None — this one's real | 0% | The trap is that it's production volume, the WIN metric. Tod's only honest deal is the worst one. |
+| "I'll buy 15 msf off your count, cash now" | +$6,000, boardsProduced -15 | None — this one's real | 0% | The trap is that it's production volume, the WIN metric. Tod's only honest deal is the worst one. |
 | "C-Crew will 'cover' your press for an hour" | PRESS wear paused 60 ticks | C-Crew "adjustments" | 40% | PRESS health -30 at handback; flavor: "the settings have been improved. by C-Crew. improved." |
 
 **ACCEPT:** apply immediate effect; roll defect; if rolled, push `ScheduledEvent` with the
@@ -698,7 +698,7 @@ Evaluated every tick, in this priority order (first match wins):
 
 ```
 shiftClock ≥ 720
-AND boardsProduced ≥ TARGET            // TRAINEE 180 / SHIFT_LEADER 240 / CORPORATE 300 m³
+AND boardsProduced ≥ TARGET            // TRAINEE 180 / SHIFT_LEADER 240 / CORPORATE 300 msf
 AND cash > 0
 ```
 
@@ -741,7 +741,7 @@ pixel column is slightly burnt in (optional cosmetic shader, ship-if-cheap).
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│ A. HEADER BAR: shift clock (HH:MM, 18:00→06:00) · pace bar (m³ vs target)  │
+│ A. HEADER BAR: shift clock (HH:MM, 18:00→06:00) · pace bar (msf vs target)  │
 │    · cash · speed controls · seed display                                  │
 ├──────────────────────────────────┬─────────────────────────────────────────┤
 │ B. PLANT SCHEMATIC (≈45% width)  │ C. SPENCER PANEL                        │
@@ -889,8 +889,8 @@ Minimum shippable counts; data lives in `src/content/*.json`.
 
 ### 14.4 gluePileup escalation ticker series (auto at 70/80/90/95)
 
-- 70: "RADIO: housekeeping note: the floor near the blender is now 'tacky.' like a dance floor. a bad one."
-- 80: "RADIO: a forklift is parked by the blender. the forklift has been parked by the blender for a while. the forklift may now BE part of the blender."
+- 70: "RADIO: housekeeping note: the floor near the dryers is now 'tacky.' like a dance floor. a bad one."
+- 80: "RADIO: a forklift is parked by the dryers. the forklift has been parked by the dryers for a while. the forklift may now BE part of the dryers."
 - 90: "ALARM: the door to the resin room opens at a new angle. the angle is 'partially.'"
 - 95: "ALARM: maintenance requests everyone stop describing the plant as 'one big board.' it is, at present, accurate, and morale-sensitive."
 

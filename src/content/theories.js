@@ -1,19 +1,26 @@
 // Dave's monologue library (spec §14.3). Voice rule (§12): every line
 // contains at least one quoted "they". Dave is genuinely good at his job.
 // That is what makes this hard.
+//
+// v2: the unified theory. Dave believes nobody EARNS a million dollars —
+// at $999,999 'they' send a guy, there's a club, there's a robe component,
+// and everything else (birds, golf, the wellness survey) is downstream
+// infrastructure of the club. Internally consistent. Horrifyingly so.
 
 export const THEORIES = [
-  "The refiner bearings? Ground down on PURPOSE. 'They' switched the grease spec in 2019. Look up who owns the grease company. LOOK UP WHO OWNS THE GREASE COMPANY.",
-  "Resin viscosity's different on Tuesdays. 'They' do logistics on Mondays. Connect it. I'm not going to connect it for you, Spencer, growth has to come from inside.",
-  "Why'd 'they' repave the parking lot, Spencer. What's UNDER the parking lot. What WAS.",
-  "Every press platen made after 2015 has a chip in it. 'They' call it diagnostics. Diagnostics of WHAT, Spencer. Diagnostics of WHO.",
-  "You ever notice the vending machine only jams on payday? 'They' know when we have money. The machine knows. It reports up.",
-  "The new safety posters use a font 'they' developed to lower testosterone. I sourced my own posters. Same message, honest font.",
-  "Birds don't land on the chip pile anymore. Birds KNOW things, Spencer. 'They' got to the birds first.",
-  "I measured the night shift. It's four minutes longer than the day shift. 'They' shave it off our end. Four minutes a night, every night, since NAFTA.",
-  "The cooler hums in B flat now. It used to hum in A. 'They' retuned the grid. Look up what B flat does to your decision-making. I'll wait.",
-  "Corporate sent a wellness survey asking if I 'feel heard.' Oh, 'they' hear me alright. The question is through WHAT in the drop ceiling.",
-  "Why does Tod's crew always have spare fiber, Spencer? Where does a man GET surplus fiber? 'They' supply him. He's a distribution node. A bad one, but a node.",
-  "The blowline pressure gauge is analog because 'they' can't fake analog. It's the only gauge in this plant I trust. It's the only gauge in this plant that's ever been honest with me.",
-  "My multimeter and the plant's multimeter disagree by 0.2 volts. Every time. Same direction. That's not drift, Spencer. That's POLICY. 'They' wrote it down somewhere.",
+  "Nobody EARNS a million dollars, Spencer. You get to $999,999 and 'they' send a guy. There's a meeting. There's an NDA. There's a robe component I won't get into on shift. You think the regional VP bought that boat with WAGES?",
+  "Every millionaire is in the club. Same club. ONE club. The first million is the signing bonus and the dues are your soul. Why do you think 'they' all have the same handshake? I've watched the handshake, Spencer. It has SYLLABLES.",
+  "The corporate retreat is four days. Team building takes ONE. What are days two through four, Spencer? I've seen the laundry invoice. Forty robes. 'They' expensed the candles as SAFETY SUPPLIES.",
+  "The org chart has a floor nobody's on. Not in the building — in the CHART. 'They' promote you there and you stop having a parking spot but your badge still works SOMEWHERE. Where's Doug? You remember Doug? WHERE'S DOUG?",
+  "You ever met a RETIRED plant manager? Exactly. 'They' hit their number and ascend. There's a lake house. Nobody has coordinates for the lake house. The lake might not even have water, Spencer. It might have MEETINGS.",
+  "The lottery is a recruitment tool. You win, 'they' show up with the paperwork, and that's why winners go quiet and weird inside a year. It's not the taxes, Spencer. It's the CEREMONIES.",
+  "Birds aren't real, but that's entry level. The chip pile is a charging station. Same eight pigeons since March — I numbered them. Number six doesn't blink right, and 'they' rotated him out for two weeks. He came back DIFFERENT.",
+  "Why is the breakroom coffee free? NOTHING in this plant is free. The creamer is a consent form. 'They' count the stir sticks, Spencer. I bring my own and it breaks the count, and THAT'S why my reviews read the way they read.",
+  "Kevin's puns are a numbers station. The wood ones are coordinates. I decoded Tuesday's — it's a parking spot downtown. Kevin doesn't HAVE a car, Spencer. So who are 'they' parking there?",
+  "The night shift exists because the machines need WITNESSES. Robots could run this place tomorrow. 'They' keep humans on nights for liability. Liability for WHAT, Spencer? The paperwork says 'incidents.' The quotes are theirs, not mine.",
+  "Tod's truck is two years old. Tod's truck is ALWAYS two years old. Run the math on a shift leader's salary — the math doesn't run, Spencer, it LIMPS. Either he's in the club's farm system or 'they' lease him out as a cautionary tale.",
+  "The wellness survey asked if I 'feel heard.' Oh, 'they' hear me fine. The question is through WHAT in the drop ceiling. I left it blank. The blank counted as a response. Read the methodology, Spencer. I have. Twice.",
+  "The vending machine jams on payday. EVERY payday. It knows when we have money because 'they' synced it to payroll. And ask yourself why the snack guy has a badge now. A badge with a CHIP in it.",
+  "Analog gauges can't lie, which is why this plant has exactly one left. ONE. 'They' digitized everything else the same quarter the bonuses went 'discretionary.' I trust the blowline gauge and I trust you, Spencer. In that order.",
+  "Why does the plant manager golf with the resin vendor? Eighteen holes is FOUR HOURS of unrecorded conversation. 'They' invented golf FOR that. Look up when golf was invented, Spencer. Then look up what else got invented that century. BANKS, Spencer. Banks.",
 ];

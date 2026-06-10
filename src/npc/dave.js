@@ -91,7 +91,7 @@ export function tickDave(state) {
           prompt: `DAVE (gripping wrench, eyes bright): "${theory}"`,
           options: [
             'You know what Dave, that explains a lot.',
-            "Dave. The bearings are just old.",
+            "Dave. I make shift-leader money. Nobody is sending me a robe.",
           ],
           timerTicks: BALANCE.DAVE.MONOLOGUE_TIMER,
           timeoutOption: 1, // silence is violence, per Dave

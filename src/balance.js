@@ -14,12 +14,23 @@ export const BALANCE = {
   CAPS: { fiber: 200, resin: 30, bp: 240, bpFloor: 60 },
 
   PRODUCTION: {
-    BASE_RATE: 0.55,        // m³ per tick, theoretical
+    BASE_RATE: 0.55,        // msf per tick, theoretical
     FIBER_PER_M3: 0.72,     // tonnes
     RESIN_PER_M3: 0.085,    // tonnes
-    BOARD_PRICE: 310,       // USD per saleable m³
+    BOARD_PRICE: 310,       // USD per saleable msf
     QUALITY_DRIFT: 0.04,    // per tick, natural entropy
     CONTAMINATION_DRIFT: 0.35, // per tick while Tod's wet fiber is in the system
+  },
+
+  // Line rate lever (player-facing). Faster boards, faster reasons to stop.
+  RATE: {
+    LEVELS: [
+      { label: 'REDUCED', tp: 0.80, wear: 0.65, breakdown: 0.65 },
+      { label: 'STANDARD', tp: 1.00, wear: 1.00, breakdown: 1.00 },
+      { label: 'OVERDRIVE', tp: 1.18, wear: 1.80, breakdown: 1.90 },
+    ],
+    START_INDEX: 1,
+    WINDOW: 60,             // rolling msf/hr window (60 ticks = 1 in-game hour)
   },
 
   TARGETS: { TRAINEE: 180, SHIFT_LEADER: 240, CORPORATE_TARGETS: 300 },
@@ -37,7 +48,7 @@ export const BALANCE = {
     // wear: health lost per tick while RUNNING; weight: uptime contribution;
     // degradedTp: throughput factor while DEGRADED
     REFINER: { wear: 0.030, weight: 0.20, degradedTp: 0.65, label: 'REFINER' },
-    BLENDER: { wear: 0.025, weight: 0.15, degradedTp: 0.70, label: 'BLENDER' },
+    BLENDER: { wear: 0.025, weight: 0.15, degradedTp: 0.70, label: 'DRYERS' },
     FORMER:  { wear: 0.020, weight: 0.15, degradedTp: 0.75, label: 'FORMING LINE' },
     PRESS:   { wear: 0.045, weight: 0.25, degradedTp: 0.55, label: 'HOT PRESS' },
     COOLER:  { wear: 0.015, weight: 0.10, degradedTp: 0.80, label: 'BOARD COOLER' },
@@ -59,6 +70,8 @@ export const BALANCE = {
     MANDATORY_FUN_TICKS: 10,
     PAUSE_AMBUSH_BONUS: 0.15,  // extra approach probability after a long pause
     PAUSE_AMBUSH_TICKS: 5,
+    // Kevin nags about a low msf/hr rate. Passive-aggressively. With puns.
+    RATE_NAG: { AFTER_TICK: 90, FRACTION: 0.75, COOLDOWN: [60, 100], BP: 3 },
   },
 
   CHRIS: {

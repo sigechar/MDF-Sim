@@ -34,6 +34,7 @@ export function createInitialState(seed, difficulty = 'SHIFT_LEADER') {
       resin: BALANCE.START.resin,
       boardsProduced: 0,
       boardsScrapped: 0,
+      rateWindow: [], // per-tick msf, last 60 ticks → msf/hr
     },
     plant: {
       uptime: 100,
@@ -41,6 +42,7 @@ export function createInitialState(seed, difficulty = 'SHIFT_LEADER') {
       machines,
       alarms: [],
       gluePileup: 8, // the day shift "was going to get to it"
+      rateIndex: BALANCE.RATE.START_INDEX,
     },
     spencer: {
       bp: BALANCE.START.bp,
@@ -55,6 +57,7 @@ export function createInitialState(seed, difficulty = 'SHIFT_LEADER') {
       kevin: {
         status: 'ROAMING', punCooldown: 20, approachTicks: 0, calmTicks: 0,
         funTicks: 0, punsDeliveredThisShift: 0, ambushBoostTicks: 0, punIndex: -1,
+        nagCooldown: 0,
       },
       chris: {
         status: 'AVAILABLE', target: null, etaTicks: 0,

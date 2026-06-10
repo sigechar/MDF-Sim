@@ -4,8 +4,11 @@
 
 import { BALANCE } from '../balance.js';
 import { chance, randInt, pick } from '../rng.js';
-import { pushTicker, addBP, highAlarmCount, authorityCrisisActive } from '../util.js';
-import { PUNS } from '../content/puns.js';
+import {
+  pushTicker, addBP, highAlarmCount, authorityCrisisActive,
+  msfPerHour, requiredMsfPerHour,
+} from '../util.js';
+import { PUNS, KEVIN_RATE_NAGS } from '../content/puns.js';
 
 export function tickKevin(state) {
   const k = state.npcs.kevin;
@@ -13,6 +16,7 @@ export function tickKevin(state) {
 
   if (k.ambushBoostTicks > 0) k.ambushBoostTicks--;
   if (k.punCooldown > 0) k.punCooldown--;
+  if (k.nagCooldown > 0) k.nagCooldown--;
 
   // The Mandatory Fun is unstoppable, even by crisis. ESPECIALLY by crisis.
   if (k.status === 'MANDATORY_FUN') {
@@ -56,6 +60,17 @@ export function tickKevin(state) {
       break;
     }
     case 'ROAMING': {
+      // The rate nag: when msf/hr runs low, Kevin does not raise the issue.
+      // He stands NEAR the issue and radiates. With wordplay.
+      const RN = BALANCE.KEVIN.RATE_NAG;
+      if (state.meta.tick >= RN.AFTER_TICK && (k.nagCooldown ?? 0) <= 0
+        && msfPerHour(state) < requiredMsfPerHour(state) * RN.FRACTION) {
+        const text = pick(state, KEVIN_RATE_NAGS)(
+          msfPerHour(state).toFixed(1), requiredMsfPerHour(state).toFixed(0));
+        addBP(state, 'STRESS_KEVIN_NUDGE', RN.BP);
+        pushTicker(state, { speaker: 'KEVIN', severity: 'WARN', text });
+        k.nagCooldown = randInt(state, RN.COOLDOWN[0], RN.COOLDOWN[1]);
+      }
       const p = BALANCE.KEVIN.APPROACH_P
         + (k.ambushBoostTicks > 0 ? BALANCE.KEVIN.PAUSE_AMBUSH_BONUS : 0);
       if (k.punCooldown <= 0 && chance(state, p)) {
