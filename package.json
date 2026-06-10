@@ -1,0 +1,11 @@
+{
+  "name": "mdf-sim",
+  "version": "1.0.0",
+  "description": "MDF-SIM: Pressed For Time — an industrial sanity simulator",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "sim": "node sim/headless.js",
+    "test": "node sim/test.js"
+  }
+}

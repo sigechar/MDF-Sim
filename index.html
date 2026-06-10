@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDF-SIM: Pressed For Time</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="vignette"></div>
+<div id="app">
+
+  <!-- A. HEADER BAR -->
+  <header id="panel-a" class="panel">
+    <span class="brand">MDF-SIM <em>“PRESSED FOR TIME”</em> · D-CREW HMI</span>
+    <span id="hdr-clock" class="lcd">18:00</span>
+    <div id="pace-wrap" title="production vs corporate target">
+      <div id="pace-bar"><div id="pace-fill"></div><div id="pace-mark"></div></div>
+      <span id="pace-label" class="lcd small">0 / 240 m³</span>
+    </div>
+    <span id="hdr-cash" class="lcd">$25,000</span>
+    <div id="speed-ctl">
+      <button id="btn-speed1" class="ctl on">1×</button>
+      <button id="btn-speed2" class="ctl">2×</button>
+      <button id="btn-pause" class="ctl">⏸ PAUSE</button>
+    </div>
+    <span id="hdr-seed" class="dim small">SEED —</span>
+  </header>
+  <div id="klaxon-strip"></div>
+
+  <div id="mid">
+    <!-- B. PLANT SCHEMATIC -->
+    <section id="panel-b" class="panel">
+      <div class="panel-title">PLANT SCHEMATIC — LINE 1 <span id="uptime-label" class="lcd small">UPTIME 100%</span></div>
+      <div id="schematic">
+        <div id="machine-grid"></div>
+        <div id="kevin-marker" title="Kevin">☺ KEVIN</div>
+        <div id="kevin-office">OFFICE <span id="office-light">●</span></div>
+        <div id="goo" title="resin accumulation"></div>
+        <div id="goo-label" class="small">GLUE PILEUP <span id="goo-pct">0</span>%</div>
+      </div>
+    </section>
+
+    <aside id="right-col">
+      <!-- C. SPENCER PANEL -->
+      <section id="panel-c" class="panel">
+        <div class="panel-title">SHIFT LEADER — SPENCER <span id="bp-zone-chip" class="chip green">GREEN</span></div>
+        <div id="bp-row">
+          <div id="bp-gauge"><div id="bp-fill"></div></div>
+          <div id="bp-readout">
+            <span id="bp-value" class="lcd big">118</span>
+            <span id="bp-trend">→</span>
+          </div>
+        </div>
+        <div id="spencer-sub">
+          <span class="small dim">BLOOD PRESSURE INDEX</span>
+          <span id="caffeine-pips" title="active coffees">○○○</span>
+        </div>
+        <div id="spencer-actions">
+          <button id="btn-coffee" class="act">☕ COFFEE <span class="price">free</span></button>
+          <button id="btn-scream" class="act">🗄 SCREAM INTO LOCKER</button>
+        </div>
+      </section>
+
+      <!-- D. PERSONNEL BOARD -->
+      <section id="panel-d" class="panel">
+        <div class="panel-title">PERSONNEL — NIGHT SHIFT</div>
+        <div id="crew"></div>
+      </section>
+    </aside>
+  </div>
+
+  <!-- E. RESOURCES STRIP -->
+  <section id="panel-e" class="panel">
+    <div class="res">
+      <span class="res-label">FIBER SILO</span>
+      <div class="bar"><div id="fiber-fill" class="fill cyan"></div></div>
+      <span id="fiber-val" class="lcd small">80t</span>
+      <button id="btn-fiber" class="act small">BUY +25t <span class="price" id="fiber-price"></span></button>
+      <button id="btn-rush" class="act small">RUSH <span class="price" id="rush-price"></span></button>
+    </div>
+    <div class="res">
+      <span class="res-label">RESIN TANK</span>
+      <div class="bar"><div id="resin-fill" class="fill cyan"></div></div>
+      <span id="resin-val" class="lcd small">12t</span>
+      <button id="btn-resin" class="act small">BUY +6t <span class="price" id="resin-price"></span></button>
+    </div>
+    <div class="res">
+      <span class="res-label">QUALITY</span>
+      <div class="bar"><div id="quality-fill" class="fill green"></div></div>
+      <span id="quality-val" class="lcd small">85</span>
+      <button id="btn-calibrate" class="act small">CALIBRATE <span class="price">$800</span></button>
+    </div>
+    <div class="res">
+      <span class="res-label">HOUSEKEEPING</span>
+      <div class="bar"><div id="glue-fill" class="fill amber"></div></div>
+      <span id="glue-val" class="lcd small">8%</span>
+      <button id="btn-cleanup" class="act small">CLEANUP CREW <span class="price">$1,200</span></button>
+      <button id="btn-purge" class="act small hidden">PURGE FIBER <span class="price">$1,500</span></button>
+    </div>
+  </section>
+
+  <!-- F. RADIO DISPATCH TICKER -->
+  <footer id="panel-f" class="panel">
+    <div class="panel-title">RADIO DISPATCH</div>
+    <div id="ticker"></div>
+  </footer>
+</div>
+
+<!-- Choice modal: radio handset overlay; the plant degrades live behind it -->
+<div id="choice-modal" class="overlay hidden">
+  <div id="choice-box" class="panel">
+    <div class="panel-title">◉ INCOMING TRANSMISSION</div>
+    <p id="choice-prompt"></p>
+    <div id="choice-squelch"><div id="choice-squelch-fill"></div></div>
+    <div id="choice-buttons">
+      <button id="choice-0" class="act"></button>
+      <button id="choice-1" class="act"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Kevin's pun toast: 4 seconds, cannot be dismissed early. That IS the mechanic. -->
+<div id="pun-toast" class="hidden">
+  <div class="pun-head">KEVIN (in person, too close)</div>
+  <div id="pun-text"></div>
+  <div class="pun-foot">[ this message cannot be dismissed ]</div>
+</div>
+
+<!-- Pause tax: Kevin approaches the office window -->
+<div id="pause-kevin" class="hidden">⏸ PAUSED<br><span class="small">Kevin is slowly approaching your office window.</span></div>
+
+<!-- Start overlay -->
+<div id="start-overlay" class="overlay">
+  <div class="panel big-modal">
+    <h1>MDF-SIM</h1>
+    <h2>“PRESSED FOR TIME” — an industrial sanity simulator</h2>
+    <p class="briefing">18:00. You are <strong>Spencer</strong>, shift leader, D-Crew. Corporate wants <strong id="brief-target">240 m³</strong> of board by 06:00.
+    Your superintendent tells puns and hides. Your maintenance superintendent makes things worse with total confidence.
+    Your best millwright is mortal. Your other millwright thinks the bearings are sabotaged by globalists.
+    A rival shift leader would like a word about some surplus fiber.<br><br>Your blood pressure is a resource. Spend it wisely.</p>
+    <div class="form-row">
+      <label>SEED <input id="seed-input" type="number"></label>
+      <label>DIFFICULTY
+        <select id="difficulty-input">
+          <option value="TRAINEE">TRAINEE (180 m³)</option>
+          <option value="SHIFT_LEADER" selected>SHIFT LEADER (240 m³)</option>
+          <option value="CORPORATE_TARGETS">CORPORATE TARGETS (300 m³)</option>
+        </select>
+      </label>
+    </div>
+    <div class="form-row">
+      <button id="btn-start" class="act">▶ CLOCK IN</button>
+      <button id="btn-resume" class="act hidden">RESUME SAVED SHIFT</button>
+    </div>
+  </div>
+</div>
+
+<!-- End overlay -->
+<div id="end-overlay" class="overlay hidden">
+  <div class="panel big-modal">
+    <h1 id="end-title"></h1>
+    <p id="end-copy" class="briefing"></p>
+    <p id="end-grade" class="lcd"></p>
+    <div id="end-stats"></div>
+    <p id="end-dayshift" class="small dim"></p>
+    <div class="form-row">
+      <button id="btn-again" class="act">▶ NEXT SHIFT (new seed)</button>
+      <button id="btn-retry" class="act">↻ SAME SEED</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

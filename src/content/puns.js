@@ -1,0 +1,38 @@
+// Kevin's pun library (spec §14.1). Voice rule (§12): Kevin never uses
+// periods — only exclamation points and ellipses. isWoodRelated puns hit
+// harder (+6 BP vs +4) because they hit closer to home.
+
+export const PUNS = [
+  { text: "Spencer!! I told the day crew a joke about the press... it didn't land, but it sure did COMPRESS the room!!", isWoodRelated: true },
+  { text: "You know why I love this job?? It's so... BOARDING!!", isWoodRelated: true },
+  { text: "I'd tell you my sander joke but it needs some... polishing!!!", isWoodRelated: true },
+  { text: "Did you see the new forklift guy?? Really LIFTS the team spirit!!", isWoodRelated: false },
+  { text: "I'm not saying the night shift is long but... wood you believe it's only 9pm!!!", isWoodRelated: true },
+  { text: "Spencer... why don't refiners ever gossip?? Because they keep everything under WRAPS... fiber wraps!!", isWoodRelated: true },
+  { text: "I was going to make a resin joke but I didn't want it to... STICK around all night!!", isWoodRelated: true },
+  { text: "What do you call a board that won't stop talking?? A CHATTERbox elder... wait, chipboard!! I'll workshop it!!", isWoodRelated: true },
+  { text: "The blender and I have a lot in common... we both MIX well with others!!", isWoodRelated: true },
+  { text: "Hey hey... what's a millwright's favorite music?? HEAVY METAL!!!", isWoodRelated: false },
+  { text: "Spencer!! I just saw the quality numbers... they're off the CHARTS!! the bottom of the charts but still!!", isWoodRelated: false },
+  { text: "Why did the MDF board go to therapy?? Too many LAYERS!!!", isWoodRelated: true },
+  { text: "You look stressed!! You should be more like the cooler... just CHILL!!", isWoodRelated: true },
+  { text: "I asked the press how it was doing and it said it was under a lot of... PRESSURE!!!", isWoodRelated: true },
+  { text: "Knock knock!! ...it's me!! Kevin!! No punchline, I just like saying knock knock in a wood plant!!", isWoodRelated: true },
+  { text: "What did the saw say to the board?? Nothing... it just CUT him off!!!", isWoodRelated: true },
+  { text: "Why don't superintendents play hide and seek?? ...okay bad example!!", isWoodRelated: false },
+  { text: "The fiber silo called... it wants to know if you're feeling EMPTY inside too!!!", isWoodRelated: true },
+  { text: "Spencer... I'm reading a book about glue!! I just can't seem to put it DOWN!!!", isWoodRelated: true },
+  { text: "What's a conveyor belt's life motto?? Just keep things MOVING!!!", isWoodRelated: false },
+  { text: "I told corporate our numbers were sawdust... because they're FINE!! get it... fines!!!", isWoodRelated: true },
+  { text: "Why was the sander so popular?? It was SMOOTH with everybody!!!", isWoodRelated: true },
+  { text: "You and me, Spencer... we're like resin and fiber!! Inseparable!! legally, per our shift assignments!!", isWoodRelated: true },
+  { text: "What do you call Terry on break?? ...unavailable!! ha!! but seriously he won't answer the radio!!", isWoodRelated: false },
+  { text: "I tried to organize a plant trivia night... it got BOARD really fast!!!", isWoodRelated: true },
+  { text: "The hot press asked for a raise!! I said you're already the most VALUED member of the team... by weight!!!", isWoodRelated: true },
+  { text: "Why did the wood chip apply for a promotion?? It wanted to be PANEL management!!!", isWoodRelated: true },
+  { text: "Spencer!! Fun fact... I've never once been in the plant during an emergency!! Lucky streak!!!", isWoodRelated: false },
+  { text: "What's brown and sticky?? A STICK!! but also currently the floor by the blender... unrelated!!", isWoodRelated: true },
+  { text: "They say hard work never killed anyone... but why CHANCE it, am I right!!!", isWoodRelated: false },
+  { text: "I'd make a joke about the dust collector but it would just... BLOW over!!!", isWoodRelated: false },
+  { text: "What did zero say to eight?? Nice belt!! That's a safety joke!! Wear your belts!!!", isWoodRelated: false },
+];

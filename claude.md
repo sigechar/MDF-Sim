@@ -236,7 +236,7 @@ interface Machine {
 ### 5.3 Breakdown Roll (per tick, per RUNNING/DEGRADED machine)
 
 ```
-P(breakdown) = BASE_BREAKDOWN            // 0.0006 per tick
+P(breakdown) = BASE_BREAKDOWN            // 0.0017 per tick (tuned v1.0; was 0.0006 pre-balance)
              × (2.0 - health/100)        // low health up to doubles it
              × statusMod                 // DEGRADED: ×2.5
              × chrisAuraMod              // Chris ON_SITE at this machine: ×1.8 (§8.2)
@@ -337,7 +337,7 @@ BP is the **human friction integrator**. All NPC dysfunction terminates here.
 ```
 bp(t+1) = clamp( bp(t) + Σ stressSources - Σ reliefSources - homeostasis , 60, 240 )
 
-homeostasis = 0.06/tick when no HIGH alarms active and no pendingChoice
+homeostasis = 0.05/tick when no HIGH alarms active and no pendingChoice
               (the body wants to live; the plant disagrees)
 ```
 
@@ -412,7 +412,7 @@ interface KevinState {
 #### State transitions
 
 ```
-ROAMING ──[per-tick roll p=0.008, off cooldown]──▶ APPROACHING
+ROAMING ──[per-tick roll p=0.011, off cooldown]──▶ APPROACHING
 APPROACHING ──[3 ticks; HMI shows Kevin icon physically traversing the
                plant map toward Spencer's office — dread telegraphing]──▶ PUNNING
 PUNNING ──[delivers pun (modal toast, 4s, CANNOT be dismissed early — the
@@ -674,7 +674,7 @@ interface ChoiceEvent {
 
 ### 9.2 Spawn scheduling
 
-- Per-tick incident roll: `p = 0.004 × difficultyMod × (1 + tick/720 × 0.6)` — the shift
+- Per-tick incident roll: `p = 0.007 × difficultyMod × (1 + tick/720 × 0.6)` — the shift
   gets meaner as it ages (act structure: hours 1–3 tutorial-calm, 4–8 grind, 9–12 siege).
 - Hourly guaranteed roll from the INCIDENT table (§14.2).
 - **Only one `pendingChoice` at a time.** If a CHOICE spawns while one is open, it queues
@@ -821,9 +821,9 @@ export const BALANCE = {
   PRODUCTION: { BASE_RATE: 0.55, FIBER_PER_M3: 0.72, RESIN_PER_M3: 0.085,
                 BOARD_PRICE: 310, QUALITY_DRIFT: 0.04 },
   TARGETS: { TRAINEE: 180, SHIFT_LEADER: 240, CORPORATE_TARGETS: 300 },
-  BREAKDOWN: { BASE: 0.0006, DEGRADED_MOD: 2.5, CHRIS_AURA: 1.8, DAVE_BOOST: 1.6,
+  BREAKDOWN: { BASE: 0.0017, DEGRADED_MOD: 2.5, CHRIS_AURA: 1.8, DAVE_BOOST: 1.6,
                DIFF: { TRAINEE: 0.7, SHIFT_LEADER: 1.0, CORPORATE_TARGETS: 1.3 } },
-  KEVIN: { APPROACH_P: 0.008, PUN_BP: 4, WOOD_PUN_BP: 6, ABSENTEE_MULT: 1.5,
+  KEVIN: { APPROACH_P: 0.011, PUN_BP: 4, WOOD_PUN_BP: 6, ABSENTEE_MULT: 1.5,
            HIDING_BP_PER_TICK: 0.30, HIDE_EXIT_CALM_TICKS: 12 },
   CHRIS: { COST: 0, BASE_REPAIR_TICKS: 40, AURA_BP: 0.20,
            OUTCOMES: { FIXED: 0.45, FIXEDISH: 0.25, SECONDARY: 0.22, CATASTROFIX: 0.08 },
