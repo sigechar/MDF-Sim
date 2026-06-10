@@ -22,7 +22,7 @@
     <div id="speed-ctl">
       <button id="btn-speed1" class="ctl on">1×</button>
       <button id="btn-speed2" class="ctl">2×</button>
-      <button id="btn-pause" class="ctl">⏸ PAUSE</button>
+      <button id="btn-pause" class="ctl">❚❚ PAUSE</button>
     </div>
     <span id="hdr-seed" class="dim small">SEED —</span>
   </header>
@@ -34,8 +34,12 @@
       <div class="panel-title">PLANT SCHEMATIC — LINE 1 <span id="uptime-label" class="lcd small">UPTIME 100%</span></div>
       <div id="schematic">
         <div id="machine-grid"></div>
-        <div id="kevin-marker" title="Kevin">☺ KEVIN</div>
-        <div id="kevin-office">OFFICE <span id="office-light">●</span></div>
+        <div id="floor-actors"></div>
+        <div id="kevin-office" class="room-label">KEVIN'S OFFICE <span id="office-light">●</span></div>
+        <div id="rm-break" class="room-label">BREAK ROOM</div>
+        <div id="rm-shop" class="room-label">MAINT. SHOP</div>
+        <div id="rm-crib" class="room-label">TOOL CRIB</div>
+        <div id="rm-door" class="room-label">YARD DOOR</div>
         <div id="goo" title="resin accumulation"></div>
         <div id="goo-label" class="small">GLUE PILEUP <span id="goo-pct">0</span>%</div>
       </div>
@@ -57,8 +61,8 @@
           <span id="caffeine-pips" title="active coffees">○○○</span>
         </div>
         <div id="spencer-actions">
-          <button id="btn-coffee" class="act">☕ COFFEE <span class="price">free</span></button>
-          <button id="btn-scream" class="act">🗄 SCREAM INTO LOCKER</button>
+          <button id="btn-coffee" class="act">COFFEE <span class="price">free</span></button>
+          <button id="btn-scream" class="act">SCREAM INTO LOCKER</button>
         </div>
       </section>
 
@@ -117,6 +121,7 @@
       <button id="choice-0" class="act"></button>
       <button id="choice-1" class="act"></button>
     </div>
+    <div id="choice-foot" class="small dim">the plant keeps degrading behind this conversation — courteously, at one-third speed</div>
   </div>
 </div>
 
@@ -128,7 +133,7 @@
 </div>
 
 <!-- Pause tax: Kevin approaches the office window -->
-<div id="pause-kevin" class="hidden">⏸ PAUSED<br><span class="small">Kevin is slowly approaching your office window.</span></div>
+<div id="pause-kevin" class="hidden">❚❚ PAUSED<br><span class="small">Kevin is slowly approaching your office window.</span></div>
 
 <!-- Start overlay -->
 <div id="start-overlay" class="overlay">
@@ -151,7 +156,22 @@
     </div>
     <div class="form-row">
       <button id="btn-start" class="act">▶ CLOCK IN</button>
+      <button id="btn-start-tour" class="act">FIRST NIGHT? CLOCK IN + ORIENTATION</button>
       <button id="btn-resume" class="act hidden">RESUME SAVED SHIFT</button>
+    </div>
+  </div>
+</div>
+
+<!-- Orientation tour: the walkthrough nobody gave Spencer -->
+<div id="tour-overlay" class="hidden">
+  <div id="tour-highlight"></div>
+  <div id="tour-card" class="panel">
+    <div id="tour-title" class="panel-title"></div>
+    <p id="tour-copy"></p>
+    <div id="tour-foot">
+      <span id="tour-progress" class="small dim"></span>
+      <button id="tour-skip" class="act small">SKIP — I'LL LEARN THE HARD WAY</button>
+      <button id="tour-next" class="act">NEXT ▸</button>
     </div>
   </div>
 </div>

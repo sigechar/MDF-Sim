@@ -3,7 +3,12 @@
 
 export const BALANCE = {
   TICKS_PER_SHIFT: 720,
-  TICKS_PER_SECOND: 2,
+  TICKS_PER_SECOND: 1,        // 1 in-game minute per real second at 1×
+
+  UI: {
+    CHOICE_DILATION: 3,       // engine runs at 1/3 speed while a transmission waits
+    TICKER_LINES: 6,
+  },
 
   START: { cash: 25_000, fiber: 80, resin: 12, bp: 118, quality: 85 },
   CAPS: { fiber: 200, resin: 30, bp: 240, bpFloor: 60 },
@@ -35,7 +40,7 @@ export const BALANCE = {
     BLENDER: { wear: 0.025, weight: 0.15, degradedTp: 0.70, label: 'BLENDER' },
     FORMER:  { wear: 0.020, weight: 0.15, degradedTp: 0.75, label: 'FORMING LINE' },
     PRESS:   { wear: 0.045, weight: 0.25, degradedTp: 0.55, label: 'HOT PRESS' },
-    COOLER:  { wear: 0.015, weight: 0.10, degradedTp: 0.80, label: 'STAR COOLER' },
+    COOLER:  { wear: 0.015, weight: 0.10, degradedTp: 0.80, label: 'BOARD COOLER' },
     SANDER:  { wear: 0.025, weight: 0.15, degradedTp: 0.70, label: 'SANDER/SAW' },
   },
   CHAIN: ['REFINER', 'BLENDER', 'FORMER', 'PRESS', 'COOLER', 'SANDER'],

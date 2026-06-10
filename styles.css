@@ -28,7 +28,7 @@ body {
 
 #app {
   display: grid;
-  grid-template-rows: 44px 4px 1fr 92px 132px;
+  grid-template-rows: 44px 4px 1fr 92px 152px;
   gap: 6px;
   height: 100vh;
   max-width: 1480px;
@@ -140,16 +140,44 @@ em { font-style: normal; color: var(--cyan); }
 }
 #goo-label { position: absolute; bottom: 2px; left: 8px; color: var(--amber); z-index: 5; }
 
-#kevin-marker {
-  position: absolute; z-index: 6; font-size: 11px; color: #ffd866;
-  background: rgba(0,0,0,.55); padding: 1px 5px; border-radius: 2px;
-  transition: left 1.5s linear, top 1.5s linear, opacity .5s;
-  pointer-events: none;
+/* ---- the floor: little vector coworkers, walking somewhere on purpose ---- */
+#floor-actors { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+.actor {
+  position: absolute; width: 30px; margin-left: -15px;
+  display: flex; flex-direction: column; align-items: center;
+  transition: left 1.6s linear, top 1.6s linear, opacity .6s;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.5));
 }
-#kevin-office {
-  position: absolute; top: 4px; right: 8px; z-index: 5; font-size: 9px;
+.actor svg { animation: bob 1.7s ease-in-out infinite; }
+.actor:nth-child(2) svg { animation-delay: .3s; }
+.actor:nth-child(3) svg { animation-delay: .6s; }
+.actor:nth-child(4) svg { animation-delay: .9s; }
+.actor:nth-child(5) svg { animation-delay: 1.2s; }
+@keyframes bob { 50% { transform: translateY(-1.5px); } }
+.actor .a-name {
+  font-size: 8px; letter-spacing: .5px; color: #ffd866;
+  background: rgba(0,0,0,.6); padding: 0 3px; border-radius: 2px; margin-top: 1px;
+}
+.actor .a-bubble {
+  position: absolute; bottom: 100%; margin-bottom: 3px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; white-space: nowrap; color: var(--text);
+  background: #0c0f0c; border: 1px solid var(--bevel-hi); border-radius: 3px; padding: 1px 5px;
+}
+.actor .a-bubble::after {
+  content: ''; position: absolute; top: 100%; left: 50%; margin-left: -3px;
+  border: 3px solid transparent; border-top-color: var(--bevel-hi);
+}
+
+.room-label {
+  position: absolute; z-index: 5; font-size: 9px; pointer-events: none;
   color: var(--dim); border: 1px solid var(--bevel-hi); padding: 1px 5px;
+  background: rgba(16,18,21,.7);
 }
+#kevin-office { top: 4px; right: 8px; }
+#rm-break { top: 4px; left: 8px; }
+#rm-shop { bottom: 18px; left: 8px; }
+#rm-crib { bottom: 4px; right: 8px; }
+#rm-door { bottom: 4px; left: 45%; }
 #office-light { color: var(--amber); }
 #office-light.off { color: #333; }
 
@@ -236,6 +264,8 @@ button.lagging { opacity: .6; cursor: wait; }
 #panel-f { display: flex; flex-direction: column; min-height: 0; }
 #ticker { flex: 1; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
 .tline { font-size: 12px; line-height: 1.55; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tline:last-child { animation: tnew 1.4s ease-out; }
+@keyframes tnew { 0% { background: rgba(77, 208, 225, .22); } 100% { background: transparent; } }
 .tline .tstamp { color: var(--dim); }
 .tline.sev-WARN { color: var(--amber); }
 .tline.sev-CRIT { color: var(--red); }
@@ -259,6 +289,26 @@ button.lagging { opacity: .6; cursor: wait; }
 #choice-squelch-fill { height: 100%; background: var(--cyan); transition: width .4s linear; }
 #choice-buttons { display: flex; gap: 8px; }
 #choice-buttons button { flex: 1; padding: 8px; }
+#choice-foot { margin-top: 7px; font-size: 10px; font-style: italic; text-align: center; }
+
+/* ---------------- orientation tour ---------------- */
+#tour-overlay { position: fixed; inset: 0; z-index: 200; }
+#tour-highlight {
+  position: absolute; border: 2px solid var(--cyan); border-radius: 3px;
+  box-shadow: 0 0 0 9999px rgba(5, 6, 8, .74), 0 0 18px rgba(77, 208, 225, .5);
+  transition: all .35s ease; pointer-events: none;
+}
+#tour-highlight.noring { border-color: transparent; }
+#tour-card {
+  position: absolute; width: 420px; max-width: 92vw;
+  border-color: var(--cyan) var(--bevel-lo) var(--bevel-lo) var(--cyan);
+  box-shadow: 0 0 30px rgba(77, 208, 225, .25);
+  transition: left .35s ease, top .35s ease;
+  padding: 10px 12px;
+}
+#tour-card p { font-size: 12px; line-height: 1.55; margin: 4px 0 10px; }
+#tour-foot { display: flex; align-items: center; gap: 8px; }
+#tour-foot #tour-progress { flex: 1; }
 
 #pun-toast {
   position: fixed; top: 56px; left: 50%; transform: translateX(-50%);

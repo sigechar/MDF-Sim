@@ -5,7 +5,8 @@ import { BALANCE } from './balance.js';
 import { createInitialState } from './state.js';
 import { tickGame } from './engine/tick.js';
 import { bpZone } from './engine/bp.js';
-import { buildMachineGrid, buildCrew, render, renderEnd } from './ui/hmi.js';
+import { buildMachineGrid, buildCrew, buildActors, render, renderEnd } from './ui/hmi.js';
+import { startTour } from './ui/tour.js';
 
 const $ = id => document.getElementById(id);
 const SAVE_KEY = 'mdf-sim-save-v1';
@@ -26,8 +27,15 @@ function startLoop() {
 }
 function stopLoop() { if (timer) clearInterval(timer); timer = null; }
 
+let frame = 0;
 function step() {
   if (!state || paused || state.meta.gameOver) return;
+  // While a transmission waits, the world runs at 1/3 speed so you can
+  // actually read what these people are saying to you (queued answers
+  // still go through immediately).
+  frame++;
+  if (state.events.pendingChoice && pendingActions.length === 0
+    && frame % BALANCE.UI.CHOICE_DILATION !== 0) return;
   const actions = pendingActions;
   pendingActions = [];
   tickGame(state, actions);
@@ -115,6 +123,7 @@ function wire() {
     act({ type: 'DEPLOY', npc, machineId }, btn);
   });
   buildCrew();
+  buildActors();
 
   const simple = [
     ['btn-fiber', 'BUY_FIBER'], ['btn-rush', 'RUSH_FIBER'], ['btn-resin', 'BUY_RESIN'],
@@ -134,6 +143,14 @@ function wire() {
   $('btn-start').addEventListener('click', () => {
     const seed = parseInt($('seed-input').value, 10) || Math.floor(Date.now() % 2147483647);
     newGame(seed, $('difficulty-input').value);
+  });
+  $('btn-start-tour').addEventListener('click', () => {
+    const seed = parseInt($('seed-input').value, 10) || Math.floor(Date.now() % 2147483647);
+    newGame(seed, $('difficulty-input').value);
+    // Orientation happens on the clock, but the clock is frozen. No pause
+    // tax either — even Kevin respects orientation. ESPECIALLY Kevin.
+    setPausedSafe(true);
+    startTour(() => setPausedSafe(false));
   });
   $('btn-resume').addEventListener('click', () => {
     const saved = loadGame();

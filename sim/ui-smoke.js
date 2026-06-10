@@ -14,12 +14,13 @@ global.localStorage = dom.window.localStorage;
 
 const { createInitialState } = await import('../src/state.js');
 const { tickGame } = await import('../src/engine/tick.js');
-const { buildMachineGrid, buildCrew, render, renderEnd } = await import('../src/ui/hmi.js');
+const { buildMachineGrid, buildCrew, buildActors, render, renderEnd } = await import('../src/ui/hmi.js');
 const { BALANCE } = await import('../src/balance.js');
 
 let deployRequests = [];
 buildMachineGrid((npc, machineId) => deployRequests.push({ type: 'DEPLOY', npc, machineId }));
 buildCrew();
+buildActors();
 
 let renders = 0;
 for (const seed of [11, 222, 3333, 44444]) {

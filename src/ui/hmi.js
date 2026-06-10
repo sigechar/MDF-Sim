@@ -6,14 +6,24 @@ import { clockString, money } from '../util.js';
 import { bpZone } from '../engine/bp.js';
 import { fiberPrice, rushFiberPrice, resinPrice } from '../engine/economy.js';
 import { ENDINGS } from '../engine/winloss.js';
+import { SPRITES } from './sprites.js';
 
 const $ = id => document.getElementById(id);
 
+// Anchor points (% of #schematic) for standing "at" a machine, and the rooms
+// people retreat to when they are not, strictly speaking, helping.
 const MACHINE_POS = {
-  REFINER: { left: '6%', top: '12%' }, BLENDER: { left: '39%', top: '12%' },
-  FORMER: { left: '72%', top: '12%' }, PRESS: { left: '6%', top: '58%' },
-  COOLER: { left: '39%', top: '58%' }, SANDER: { left: '72%', top: '58%' },
+  REFINER: { l: 10, t: 14 }, BLENDER: { l: 43, t: 14 }, FORMER: { l: 76, t: 14 },
+  PRESS: { l: 10, t: 60 }, COOLER: { l: 43, t: 60 }, SANDER: { l: 76, t: 60 },
 };
+const ROOM = {
+  office: { l: 86, t: 10 },     // Kevin's. The light is the truth.
+  breakroom: { l: 7, t: 12 },   // Terry's. Protected by state law / federal law / Terry's law.
+  shop: { l: 6, t: 72 },        // where Chris and Terry stage from
+  crib: { l: 88, t: 70 },       // Dave's. Perimeter status: contested.
+  door: { l: 48, t: 74 },       // Tod materializes here
+};
+const mpos = (id, slot = 0) => ({ l: MACHINE_POS[id].l + slot * 6, t: MACHINE_POS[id].t + 14 });
 
 export function buildMachineGrid(onDeploy) {
   const grid = $('machine-grid');
@@ -39,6 +49,24 @@ export function buildMachineGrid(onDeploy) {
       btn.addEventListener('click', () => onDeploy(btn.dataset.npc, btn.dataset.m));
     });
   });
+}
+
+export function buildActors() {
+  const layer = $('floor-actors');
+  if (!layer) return;
+  layer.innerHTML = '';
+  for (const [id, home] of [
+    ['chris', ROOM.shop], ['terry', { l: ROOM.shop.l + 7, t: ROOM.shop.t }],
+    ['dave', ROOM.crib], ['tod', ROOM.door], ['kevin', ROOM.office],
+  ]) {
+    const div = document.createElement('div');
+    div.className = 'actor';
+    div.id = `actor-${id}`;
+    div.style.left = `${home.l}%`;
+    div.style.top = `${home.t}%`;
+    div.innerHTML = `<span class="a-bubble hidden"></span>${SPRITES[id]}<span class="a-name">${id.toUpperCase()}</span>`;
+    layer.appendChild(div);
+  }
 }
 
 export function render(state) {
@@ -92,7 +120,7 @@ export function render(state) {
   $('goo').style.height = `${Math.min(100, state.plant.gluePileup)}%`;
   $('goo-pct').textContent = state.plant.gluePileup.toFixed(0);
 
-  renderKevinMarker(state);
+  renderActors(state);
   renderSpencer(state);
   renderCrew(state);
   renderResources(state);
@@ -100,25 +128,56 @@ export function render(state) {
   renderChoice(state);
 }
 
-function renderKevinMarker(state) {
-  const k = state.npcs.kevin;
-  const el = $('kevin-marker');
-  const light = $('office-light');
-  light.classList.toggle('off', k.status === 'HIDING');
-  if (k.status === 'HIDING') { el.style.opacity = '0'; return; }
-  el.style.opacity = '1';
-  if (k.status === 'APPROACHING') {
-    el.style.left = '82%'; el.style.top = '4%';
-    el.textContent = '☹ KEVIN (incoming)';
-  } else if (k.status === 'MANDATORY_FUN') {
-    el.style.left = '40%'; el.style.top = '40%';
-    el.textContent = '🍕 KEVIN (morale)';
-  } else {
-    const roam = BALANCE.CHAIN[Math.floor(state.meta.tick / 25) % 6];
-    const pos = MACHINE_POS[roam];
-    el.style.left = pos.left; el.style.top = pos.top;
-    el.textContent = '☺ KEVIN';
+function placeActor(id, pos, { bubble = null, gone = false } = {}) {
+  const el = $(`actor-${id}`);
+  if (!el) return;
+  el.style.left = `${pos.l}%`;
+  el.style.top = `${pos.t}%`;
+  el.style.opacity = gone ? '0' : '1';
+  const b = el.querySelector('.a-bubble');
+  if (bubble) { b.textContent = bubble; b.classList.remove('hidden'); }
+  else b.classList.add('hidden');
+}
+
+function renderActors(state) {
+  const tick = state.meta.tick;
+  const N = state.npcs;
+
+  // KEVIN — the light is on when he's contained; off when you need him most
+  const k = N.kevin;
+  $('office-light').classList.toggle('off', k.status === 'HIDING');
+  if (k.status === 'HIDING') placeActor('kevin', ROOM.office, { gone: true });
+  else if (k.status === 'APPROACHING') placeActor('kevin', { l: 90, t: 38 }, { bubble: 'incoming. has a new one.' });
+  else if (k.status === 'MANDATORY_FUN') placeActor('kevin', { l: 46, t: 38 }, { bubble: 'MANDATORY MORALE' });
+  else {
+    const roam = BALANCE.CHAIN[Math.floor(tick / 25) % 6];
+    placeActor('kevin', mpos(roam, 2), { bubble: k.ambushBoostTicks > 0 ? 'looking for you' : null });
   }
+
+  // CHRIS — walks to the machine; the walk is the safest part
+  const c = N.chris;
+  if (c.status === 'EN_ROUTE' || c.status === 'ON_SITE') {
+    placeActor('chris', mpos(c.target, 1), { bubble: c.status === 'ON_SITE' ? 'has opened a panel' : null });
+  } else if (c.status === 'EXPLAINING') placeActor('chris', { l: 46, t: 50 }, { bubble: 'whiteboard session' });
+  else placeActor('chris', ROOM.shop);
+
+  // TERRY — shop, machine (briefly; he's instant), break room, or gone
+  const t = N.terry;
+  if (t.status === 'ON_BREAK') placeActor('terry', ROOM.breakroom, { bubble: `on break — ${t.breakTicksRemaining}m. no.` });
+  else if (t.status === 'CLOCKED_OUT') placeActor('terry', ROOM.door, { gone: true });
+  else placeActor('terry', { l: ROOM.shop.l + 7, t: ROOM.shop.t });
+
+  // DAVE — tool crib unless working, monologuing, or striking
+  const d = N.dave;
+  if (d.status === 'WORKING' && d.target) placeActor('dave', mpos(d.target, 0));
+  else if (d.status === 'MONOLOGUING') placeActor('dave', { l: 70, t: 44 }, { bubble: 'gripping wrench, eyes bright' });
+  else if (d.status === 'ON_STRIKE') placeActor('dave', ROOM.crib, { bubble: 'ON STRIKE. perimeter unverified.' });
+  else placeActor('dave', ROOM.crib, { bubble: tick < d.sulkUntil ? 'sulking (audibly)' : null });
+
+  // TOD — paces the yard door like a shark that learned about quarterly targets
+  const pc = state.events.pendingChoice;
+  if (pc && pc.source === 'tod') placeActor('tod', { l: ROOM.door.l + 7, t: ROOM.door.t - 5 }, { bubble: 'heyyy' });
+  else placeActor('tod', { l: 48 + 17 * Math.sin(tick / 12), t: 76 }, { bubble: N.tod.grudge ? 'remembers' : null });
 }
 
 function renderSpencer(state) {
@@ -236,7 +295,7 @@ let lastTickerLen = -1;
 function renderTicker(state) {
   if (state.events.log.length === lastTickerLen) return;
   lastTickerLen = state.events.log.length;
-  const lines = state.events.log.slice(-4);
+  const lines = state.events.log.slice(-BALANCE.UI.TICKER_LINES);
   $('ticker').innerHTML = lines.map(l => {
     const who = l.speaker ? ` ${l.speaker}:` : '';
     return `<div class="tline sev-${l.severity} ch-${l.channel}"><span class="tstamp">[${clockString(l.tick)}] ${l.channel}${who}</span> ${escapeHtml(l.text)}</div>`;

@@ -34,9 +34,9 @@ export const BREAKDOWN_LINES = {
     'HOT PRESS DOWN. 400 tonnes of machine, zero tonnes of work ethic.',
   ],
   COOLER: [
-    'STAR COOLER DOWN. The boards are forming a hot, angry line.',
-    'STAR COOLER DOWN. It is neither starring nor cooling.',
-    'STAR COOLER DOWN. Chris said he heard it "acting cocky" earlier. Unclear.',
+    'BOARD COOLER DOWN. The boards are forming a hot, angry line.',
+    'BOARD COOLER DOWN. The boards remain at press temperature. Press temperature is not a board temperature. It is a weapon temperature.',
+    'BOARD COOLER DOWN. Chris said he heard it "acting cocky" earlier. Unclear.',
   ],
   SANDER: [
     'SANDER/SAW DOWN. The belt snapped with the energy of a man quitting retail.',

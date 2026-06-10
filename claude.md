@@ -195,7 +195,7 @@ station is `RUNNING` or `DEGRADED`.
 
 ```
  FIBER SILO → [M1 REFINER] → [M2 BLENDER] → [M3 FORMING LINE] →
- → [M4 HOT PRESS] → [M5 STAR COOLER] → [M6 SANDER/SAW] → SALEABLE m³
+ → [M4 HOT PRESS] → [M5 BOARD COOLER] → [M6 SANDER/SAW] → SALEABLE m³
 ```
 
 ### 5.1 Machine Schema
