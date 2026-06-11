@@ -1,0 +1,9 @@
+// Cloudflare Workers config: assets-only Worker, no code, no build step.
+// The repo root IS the site — index.html, styles.css, src/, assets/.
+{
+  "name": "mdf-sim",
+  "compatibility_date": "2026-06-11",
+  "assets": {
+    "directory": "."
+  }
+}
