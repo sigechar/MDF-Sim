@@ -107,7 +107,7 @@ function loadGame() {
 }
 
 // --------------------------------------------------------- intro tone ---
-// The Rainjer Board MDF shift-start jingle plays over a CRT boot splash while
+// The Ranger Board MDF shift-start jingle plays over a CRT boot splash while
 // the plant is frozen, then the shift begins. Clock-in is a real user gesture,
 // so playback is never autoplay-blocked. Robust to no-audio environments
 // (tests): if play() doesn't return a real promise, we resolve immediately.
