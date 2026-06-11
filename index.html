@@ -150,7 +150,7 @@
     <h2>“PRESSED FOR TIME” — an industrial sanity simulator</h2>
     <p class="briefing">18:00. You are <strong>Spencer</strong>, shift leader, D-Crew. Corporate wants <strong id="brief-target">240 msf</strong> of board by 06:00.
     Your superintendent tells puns and hides. Your maintenance superintendent makes things worse with total confidence.
-    Your best millwright is mortal. Your other millwright thinks the bearings are sabotaged by globalists.
+    Your best millwright is mortal. Your other millwright can prove birds aren't real and will, while torquing the press.
     A rival shift leader would like a word about some surplus fiber.<br><br>Your blood pressure is a resource. Spend it wisely.</p>
     <div class="form-row">
       <label>SEED <input id="seed-input" type="number"></label>
@@ -167,8 +167,24 @@
       <button id="btn-start-tour" class="act">FIRST NIGHT? CLOCK IN + ORIENTATION</button>
       <button id="btn-resume" class="act hidden">RESUME SAVED SHIFT</button>
     </div>
+    <div class="form-row">
+      <button id="btn-sound" class="act small on" title="plays the Rainjer Board MDF shift-start tone when you clock in">♪ INTRO TONE: ON</button>
+    </div>
   </div>
 </div>
+
+<!-- Clock-in boot splash: the Rainjer Board MDF PA tone plays over a CRT
+     power-on. Click anywhere to skip. -->
+<div id="intro-splash" class="hidden">
+  <div id="intro-inner">
+    <div id="intro-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div id="intro-logo">RAINJER BOARD</div>
+    <div id="intro-sub">MDF DIVISION · D-CREW · SHIFT START</div>
+    <div id="intro-now" class="small dim">▶ now playing — Rainjer Board MDF shift tone</div>
+    <div id="intro-skip" class="small dim">[ click anywhere to skip ]</div>
+  </div>
+</div>
+<audio id="intro-audio" src="assets/rainjer-board-mdf.mp3" preload="auto"></audio>
 
 <!-- Orientation tour: the walkthrough nobody gave Spencer -->
 <div id="tour-overlay" class="hidden">

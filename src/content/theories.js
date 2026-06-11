@@ -2,25 +2,25 @@
 // contains at least one quoted "they". Dave is genuinely good at his job.
 // That is what makes this hard.
 //
-// v2: the unified theory. Dave believes nobody EARNS a million dollars —
-// at $999,999 'they' send a guy, there's a club, there's a robe component,
-// and everything else (birds, golf, the wellness survey) is downstream
-// infrastructure of the club. Internally consistent. Horrifyingly so.
+// v3: the real ones. These are actual conspiracies people hold, on the
+// internet, with conviction — birds, Finland, the moon, the lizards —
+// delivered by a man who can also definitely fix your press. The humor is
+// in the commitment and the load-bearing tangents, not in the topic.
 
 export const THEORIES = [
-  "Nobody EARNS a million dollars, Spencer. You get to $999,999 and 'they' send a guy. There's a meeting. There's an NDA. There's a robe component I won't get into on shift. You think the regional VP bought that boat with WAGES?",
-  "Every millionaire is in the club. Same club. ONE club. The first million is the signing bonus and the dues are your soul. Why do you think 'they' all have the same handshake? I've watched the handshake, Spencer. It has SYLLABLES.",
-  "The corporate retreat is four days. Team building takes ONE. What are days two through four, Spencer? I've seen the laundry invoice. Forty robes. 'They' expensed the candles as SAFETY SUPPLIES.",
-  "The org chart has a floor nobody's on. Not in the building — in the CHART. 'They' promote you there and you stop having a parking spot but your badge still works SOMEWHERE. Where's Doug? You remember Doug? WHERE'S DOUG?",
-  "You ever met a RETIRED plant manager? Exactly. 'They' hit their number and ascend. There's a lake house. Nobody has coordinates for the lake house. The lake might not even have water, Spencer. It might have MEETINGS.",
-  "The lottery is a recruitment tool. You win, 'they' show up with the paperwork, and that's why winners go quiet and weird inside a year. It's not the taxes, Spencer. It's the CEREMONIES.",
-  "Birds aren't real, but that's entry level. The chip pile is a charging station. Same eight pigeons since March — I numbered them. Number six doesn't blink right, and 'they' rotated him out for two weeks. He came back DIFFERENT.",
-  "Why is the breakroom coffee free? NOTHING in this plant is free. The creamer is a consent form. 'They' count the stir sticks, Spencer. I bring my own and it breaks the count, and THAT'S why my reviews read the way they read.",
-  "Kevin's puns are a numbers station. The wood ones are coordinates. I decoded Tuesday's — it's a parking spot downtown. Kevin doesn't HAVE a car, Spencer. So who are 'they' parking there?",
-  "The night shift exists because the machines need WITNESSES. Robots could run this place tomorrow. 'They' keep humans on nights for liability. Liability for WHAT, Spencer? The paperwork says 'incidents.' The quotes are theirs, not mine.",
-  "Tod's truck is two years old. Tod's truck is ALWAYS two years old. Run the math on a shift leader's salary — the math doesn't run, Spencer, it LIMPS. Either he's in the club's farm system or 'they' lease him out as a cautionary tale.",
-  "The wellness survey asked if I 'feel heard.' Oh, 'they' hear me fine. The question is through WHAT in the drop ceiling. I left it blank. The blank counted as a response. Read the methodology, Spencer. I have. Twice.",
-  "The vending machine jams on payday. EVERY payday. It knows when we have money because 'they' synced it to payroll. And ask yourself why the snack guy has a badge now. A badge with a CHIP in it.",
-  "Analog gauges can't lie, which is why this plant has exactly one left. ONE. 'They' digitized everything else the same quarter the bonuses went 'discretionary.' I trust the blowline gauge and I trust you, Spencer. In that order.",
-  "Why does the plant manager golf with the resin vendor? Eighteen holes is FOUR HOURS of unrecorded conversation. 'They' invented golf FOR that. Look up when golf was invented, Spencer. Then look up what else got invented that century. BANKS, Spencer. Banks.",
+  "Birds aren't real, Spencer. Every pigeon on that chip pile is a surveillance drone — that's why they sit on the power lines, they're CHARGING. 'They' swapped the real ones out between '59 and '71. Follow the money. It ends at a binocular company. It always ends at a binocular company.",
+  "Finland is not a real country. There's no landmass there — it's open ocean 'they' fenced off so Japan could overfish in private. Every 'Finn' you've met is eastern Sweden, paid to keep the bit going. Nokia was the hush money. I've never seen Finland. Neither have you. One of us is being honest about that.",
+  "Australia's a cover story, Spencer. 'They' needed somewhere to say the convicts went, so a guy drew a continent and now there's a whole CGI budget for kangaroos. Every 'Australian' is an actor on a soundstage. They nailed the accent and got lazy on everything else. Look at a koala and tell me that renders.",
+  "We never went to the moon. Kubrick shot it — 'they' had him do the deserts in '2001' as a screen test first. The flag WAVED, Spencer. There's no wind on the moon. There's no wind because there was no trip. This wrench has logged more vacuum than Neil Armstrong.",
+  "Nobody's allowed to walk the edge of Antarctica. Ever wonder why? It's not a continent, it's the RIM. 'They' slapped a treaty on it in '59 and they patrol the ice wall so you don't go over the side. I'm not saying it's flat. I'm saying go measure it yourself and watch how fast 'they' show up.",
+  "The board of directors are reptilian. Not a metaphor, Spencer. 'They' wear human suits and that's WHY corporate keeps it at sixty-eight degrees — reptiles need it cool or the suit stops sitting right. Watch the regional VP blink sideways one time. You'll never unsee it. I haven't slept since the Q2 review.",
+  "The moon rings like a bell. Apollo dropped a spent stage on it and it rang for an HOUR — 'they' put that in the report and prayed nobody read it. It's hollow. It's a station. Same exact wobble as a load-bearing bearing somebody swapped for a counterfeit. I know that wobble. I'm hearing it right now, honestly.",
+  "Contrails fade. Chemtrails don't — they fan out and the sky goes milky and that's the day the whole shift gets a headache. 'They' spray it. Ask yourself why the sunsets got so GOOD after 2010. Better sunsets, worse memory. That was the trade 'they' made on your behalf, no email, no opt-out.",
+  "Denver International. Billions of dollars, middle of nowhere, four times bigger than it needs to be. There's a city UNDER it. 'They' put a demon horse out front with glowing red eyes — it killed the sculptor, that part's real, look it up — and the murals are about the apocalypse. It's an airport, Spencer. Why's the airport know about the apocalypse.",
+  "It was the Berenstain Bears. You remember 'Berenstein.' EVERYBODY remembers Berenstein. 'They' didn't edit a children's book, Spencer — we slid one timeline over and the spelling rode along. The Monopoly man never had a monocle. You're positive he did. That's not your memory failing. That's the seam showing.",
+  "It is not the year you think it is. 'They' inserted about three hundred years that never happened — the early Middle Ages, fabricated, Charlemagne's a composite. There's zero archaeology for entire centuries. By honest count it's roughly 1720. So this machine's warranty didn't expire, Spencer. It was never valid. Time fraud.",
+  "Four mattress stores, one intersection, all empty, all open a decade. Nobody moves four hundred mattresses a month, but the rent clears every time. 'They' run money through them — you can't audit a thing nobody walks into. Same shape as this plant's 'consumables' line, if you ever feel like never sleeping on a paid-off mattress again.",
+  "Paul McCartney died in '66. Car crash. 'They' ran a quiet lookalike contest and the winner's been 'Paul' ever since — that's why he's barefoot and out of step on the Abbey Road cover, that's how you bury a man in daylight. Play the records backward. I did. Couldn't prove it. Also can't sleep. Those might be related.",
+  "When 'they' fired up that collider in Switzerland, something shifted — that's the exact week your memory of how things WERE stopped matching how things ARE. They opened a door and never shut it. Every glitch since is the draft coming through. This bearing dying tonight? Wrong timeline. In the right one it's fine. I miss the right one, Spencer.",
+  "You ever personally dig up a dinosaur? No. 'They' show you a plaster cast in a lobby and call it a hundred million years old. Whole field was started by two rich men in a bone-buying feud in the 1800s — the Bone Wars, that's real — and it kept rolling because museums need a gift shop. This bearing's older than half their 'fossils,' and I can prove the bearing exists.",
 ];

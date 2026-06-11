@@ -308,6 +308,47 @@ button.lagging { opacity: .6; cursor: wait; }
 #choice-buttons button { flex: 1; padding: 8px; }
 #choice-foot { margin-top: 7px; font-size: 10px; font-style: italic; text-align: center; }
 
+/* ---------------- clock-in boot splash ---------------- */
+#intro-splash {
+  position: fixed; inset: 0; z-index: 300; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at center, #0c1014 0%, #050608 70%);
+  animation: intro-in .35s ease;
+}
+#intro-splash::after { /* CRT scanlines */
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,.28) 2px 3px);
+  mix-blend-mode: multiply;
+}
+#intro-splash.fading { animation: intro-out .5s ease forwards; }
+@keyframes intro-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes intro-out { to { opacity: 0; visibility: hidden; } }
+#intro-inner { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+#intro-logo {
+  font-size: 46px; letter-spacing: 8px; color: var(--cyan); font-weight: bold;
+  text-shadow: 0 0 18px rgba(77, 208, 225, .55); animation: intro-flicker 2.4s steps(60) infinite;
+}
+#intro-sub { font-size: 12px; letter-spacing: 4px; color: var(--green); }
+#intro-now { margin-top: 14px; letter-spacing: 1px; }
+#intro-skip { margin-top: 2px; opacity: .6; }
+@keyframes intro-flicker {
+  0%, 100% { opacity: 1; } 92% { opacity: 1; } 93% { opacity: .55; } 94% { opacity: 1; }
+}
+#intro-eq { display: flex; align-items: flex-end; gap: 5px; height: 56px; margin-bottom: 8px; }
+#intro-eq i {
+  display: block; width: 7px; background: var(--cyan); border-radius: 1px;
+  box-shadow: 0 0 8px rgba(77, 208, 225, .6); animation: eq 0.9s ease-in-out infinite;
+}
+#intro-eq i:nth-child(1) { animation-delay: -.7s; }
+#intro-eq i:nth-child(2) { animation-delay: -.2s; }
+#intro-eq i:nth-child(3) { animation-delay: -.5s; }
+#intro-eq i:nth-child(4) { animation-delay: -.9s; }
+#intro-eq i:nth-child(5) { animation-delay: -.3s; }
+#intro-eq i:nth-child(6) { animation-delay: -.6s; }
+#intro-eq i:nth-child(7) { animation-delay: -.1s; }
+@keyframes eq { 0%, 100% { height: 12%; } 50% { height: 100%; } }
+#intro-splash.paused #intro-eq i { animation-play-state: paused; height: 18%; }
+
 /* ---------------- orientation tour ---------------- */
 #tour-overlay { position: fixed; inset: 0; z-index: 200; }
 #tour-highlight {

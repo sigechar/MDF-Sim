@@ -52,8 +52,9 @@ You are the only competent adult in a building full of hot presses, formaldehyde
 men who should not be allowed near either. Corporate has set a production target that assumes
 nothing breaks. Everything breaks. Your superintendent tells puns and hides. Your maintenance
 superintendent makes things worse with total confidence. Your best millwright is mortal. Your
-other millwright thinks the refiner bearings are being sabotaged by "globalists." A rival
-shift leader keeps trying to sell you wet fiber "at cost." Your blood pressure is a resource.
+other millwright can prove the refiner bearings are fine and that birds aren't real, in that
+order. A rival shift leader keeps trying to sell you wet fiber "at cost." Your blood pressure
+is a resource.
 
 ### 1.2 Design Pillars (binding constraints on all features)
 
@@ -570,9 +571,10 @@ interface DaveState {
 
 #### The Dialogue Fork (core mechanic)
 
-Each monologue presents a theory (see §14.3 library: refiner bearings ground down by
-"globalist frequency weapons," the resin viscosity "they" changed after 2019, why the
-parking lot was repaved, etc.) with exactly two responses:
+Each monologue presents a theory (see §14.3 library: birds aren't real and the pigeons
+recharge on the power lines, Finland is open ocean "they" fenced off, the board of directors
+are reptilian which is why corporate keeps it at sixty-eight degrees, etc.) with exactly two
+responses:
 
 **AGREE — "You know what Dave, that explains a lot."**
 ```
@@ -882,10 +884,21 @@ Minimum shippable counts; data lives in `src/content/*.json`.
 
 ### 14.3 Dave monologue theories (need ≥12; seeds)
 
-- "The refiner bearings? Ground down on PURPOSE. 'They' switched the grease spec in 2019.
-  Look up who owns the grease company. LOOK UP WHO OWNS THE GREASE COMPANY."
-- "Resin viscosity's different on Tuesdays. 'They' do logistics on Mondays. Connect it."
-- "Why'd 'they' repave the parking lot, Spencer. What's UNDER the parking lot. What WAS."
+Real internet conspiracies, delivered by a man who can also genuinely fix your press. The
+humor is in the conviction and the load-bearing tangents, not the topic. Voice rule: every
+line quotes "they"/"them". Seeds:
+
+- "Birds aren't real, Spencer. Every pigeon on that chip pile is a surveillance drone — that's
+  why they sit on the power lines, they're CHARGING. 'They' swapped the real ones out between
+  '59 and '71. Follow the money. It ends at a binocular company."
+- "Finland is not a real country. There's no landmass there — it's open ocean 'they' fenced
+  off so Japan could overfish in private. I've never seen Finland. Neither have you."
+- "The board of directors are reptilian. Not a metaphor. 'They' wear human suits and that's
+  WHY corporate keeps it at sixty-eight degrees — reptiles need it cool or the suit slips."
+
+(Full set of 15 in `src/content/theories.js`: moon landing, Antarctic ice wall, the hollow
+moon, chemtrails, Denver airport, the Mandela effect, phantom time, mattress-store money
+laundering, Paul-is-dead, the CERN timeline shift, the dinosaur hoax.)
 
 ### 14.4 gluePileup escalation ticker series (auto at 70/80/90/95)
 

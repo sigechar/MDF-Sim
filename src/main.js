@@ -10,6 +10,7 @@ import { startTour } from './ui/tour.js';
 
 const $ = id => document.getElementById(id);
 const SAVE_KEY = 'mdf-sim-save-v1';
+const SOUND_KEY = 'mdf-sim-sound';
 
 let state = null;
 let pendingActions = [];
@@ -18,6 +19,7 @@ let speed = 1;
 let paused = false;
 let pauseStartedAt = 0;
 let punShownForTick = -1;
+let soundOn = (typeof localStorage !== 'undefined' && localStorage.getItem(SOUND_KEY)) !== 'off';
 
 // ----------------------------------------------------------------- loop ---
 function startLoop() {
@@ -104,6 +106,51 @@ function loadGame() {
   return raw ? JSON.parse(raw) : null;
 }
 
+// --------------------------------------------------------- intro tone ---
+// The Rainjer Board MDF shift-start jingle plays over a CRT boot splash while
+// the plant is frozen, then the shift begins. Clock-in is a real user gesture,
+// so playback is never autoplay-blocked. Robust to no-audio environments
+// (tests): if play() doesn't return a real promise, we resolve immediately.
+function playIntro(onDone) {
+  const splash = $('intro-splash');
+  const audio = $('intro-audio');
+  if (!soundOn || !splash || !audio) { onDone(); return; }
+
+  let done = false;
+  let timeout = null;
+  const finish = () => {
+    if (done) return;
+    done = true;
+    if (timeout) clearTimeout(timeout);
+    window.removeEventListener('keydown', onKey);
+    splash.classList.add('fading');
+    setTimeout(() => splash.classList.add('hidden'), 500);
+    try { audio.pause(); } catch { /* no audio backend */ }
+    onDone();
+  };
+  const onKey = () => finish();
+
+  splash.classList.remove('hidden', 'fading');
+  splash.onclick = finish;
+  window.addEventListener('keydown', onKey);
+  audio.onended = finish;
+
+  try {
+    audio.currentTime = 0;
+    const p = audio.play();
+    if (p && typeof p.then === 'function') {
+      // Real browser: hold the splash until the tone finishes; bail on error.
+      p.catch(() => finish());
+      timeout = setTimeout(finish, 25000); // safety net if 'ended' never fires
+    } else {
+      // No real media backend (e.g. headless test): don't hang the shift.
+      finish();
+    }
+  } catch {
+    finish();
+  }
+}
+
 // --------------------------------------------------------------- wiring ---
 function newGame(seed, difficulty) {
   state = createInitialState(seed, difficulty);
@@ -116,6 +163,13 @@ function newGame(seed, difficulty) {
   startLoop();
 }
 function setPausedSafe(p) { paused = p; $('btn-pause').classList.toggle('on', p); }
+
+function updateSoundBtn() {
+  const b = $('btn-sound');
+  if (!b) return;
+  b.textContent = `♪ INTRO TONE: ${soundOn ? 'ON' : 'OFF'}`;
+  b.classList.toggle('on', soundOn);
+}
 
 function wire() {
   buildMachineGrid((npc, machineId) => {
@@ -144,14 +198,22 @@ function wire() {
   $('btn-start').addEventListener('click', () => {
     const seed = parseInt($('seed-input').value, 10) || Math.floor(Date.now() % 2147483647);
     newGame(seed, $('difficulty-input').value);
+    // The plant powers on to the shift tone; freeze it until the jingle ends.
+    setPausedSafe(true);
+    playIntro(() => setPausedSafe(false));
   });
   $('btn-start-tour').addEventListener('click', () => {
     const seed = parseInt($('seed-input').value, 10) || Math.floor(Date.now() % 2147483647);
     newGame(seed, $('difficulty-input').value);
-    // Orientation happens on the clock, but the clock is frozen. No pause
-    // tax either — even Kevin respects orientation. ESPECIALLY Kevin.
+    // Shift tone, then orientation — both over a frozen clock. No pause tax
+    // either; even Kevin respects orientation. ESPECIALLY Kevin.
     setPausedSafe(true);
-    startTour(() => setPausedSafe(false));
+    playIntro(() => startTour(() => setPausedSafe(false)));
+  });
+  $('btn-sound').addEventListener('click', () => {
+    soundOn = !soundOn;
+    try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch { /* private mode */ }
+    updateSoundBtn();
   });
   $('btn-resume').addEventListener('click', () => {
     const saved = loadGame();
@@ -176,6 +238,7 @@ function wire() {
 
   // boot
   $('seed-input').value = Math.floor(Date.now() % 2147483647);
+  updateSoundBtn();
   if (loadGame()) $('btn-resume').classList.remove('hidden');
 }
 

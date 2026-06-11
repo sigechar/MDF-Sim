@@ -8,33 +8,33 @@ import { pushTicker, addBP, setHealth, openChoice } from '../util.js';
 import { THEORIES } from '../content/theories.js';
 
 const DAVE_DEPLOY_LINES = [
-  `Birds aren't real. Neither is 'planned' maintenance. I'm on it — twelve minutes.`,
-  `Twelve minutes. Don't touch my toolbox. The plant's torque wrenches report up.`,
-  `The failure interval on this machine is not random. I have a spreadsheet. Twelve minutes.`,
-  `This bearing didn't fail. It was *told* to fail. I know the difference. Twelve minutes.`,
-  `The manufacturer's tolerances are written to produce exactly this failure at exactly this interval. I use my own numbers. Twelve minutes.`,
-  `Every machine in this plant fails on schedule. Not 'a' schedule — THE schedule. I've mapped it. Twelve minutes.`,
-  `The grease in that machine is third-party supply-chain grease. Factory-spec grease is a subscription model for downtime. Twelve minutes.`,
-  `I'm photographing the housing before I open it. I photograph everything. Ask me why later. Actually don't — twelve minutes.`,
-  `The chip pile birds stopped landing three weeks ago. They knew. I knew. Twelve minutes.`,
-  `The 'approved vendor' components in this machine are sized to fail at exactly this interval. I have the originals. Twelve minutes.`,
-  `I already know what I'll find in there. I always know. That's the tell. Twelve minutes.`,
-  `Contrails were unusually heavy this morning. I logged it. Make of that what you will. Twelve minutes.`,
+  `Birds aren't real and neither is this work order, but the machine sure is broke. Twelve minutes.`,
+  `On my way. If I'm not back in twelve minutes, check under the Denver airport. That's where they keep us.`,
+  `Twelve minutes. Don't drink the breakroom water while I'm gone — fluoride calcifies the exact part of your brain that notices this stuff.`,
+  `Heading over. The moon's been ringing like a bell all night. That means a bearing's a fake somewhere. I know where.`,
+  `Twelve minutes. And no, before you ask, we never went to the moon. Unrelated to the repair. Probably.`,
+  `Going now. Keep the thermostat where it is. If corporate turns it down tonight, the reptile thing is real and we'll finally know.`,
+  `Twelve minutes. I'm filming the repair. Not for you. For the timeline that's watching.`,
+  `On it. Third failure this month, and there are four mattress stores out by the highway. I'm just putting those two facts in one sentence.`,
+  `Twelve minutes. Finland called about this part. Finland isn't real, so sit with the question of who actually called.`,
+  `Heading in. If the sky looks milky tomorrow that's 'them' spraying — unrelated to the machine, very related to your headache.`,
+  `Twelve minutes. The dinosaurs were a hoax but this bearing is genuinely a hundred years old, and I can only prove one of those.`,
+  `Going. Don't let day shift near my toolbox. Half of them blink sideways and I've stopped pretending I didn't clock it.`,
 ];
 
 const DAVE_FIX_LINES = [
-  `Fixed. Torqued to real specs. Not the brochure specs. Never the brochure specs.`,
-  `Running. I found a bird band in the housing. I photographed it. I've seen this before.`,
-  `Online. The wear pattern on that shaft is consistent with a 90-day induced failure cycle. I've logged it.`,
-  `Fixed. The failed bearing has a serial number I've seen on three other machines. It's in my truck now.`,
-  `Running. Replaced the approved-vendor part with my personal stock. You'll notice it lasts longer. Notice that.`,
-  `Done. There was a GPS module zip-tied to the frame. I left it there. Let them think we haven't noticed.`,
-  `Online. The lubrication was off-spec by precisely the margin that produces precisely this failure interval. Precision like that is not an accident.`,
-  `Fixed. And I swept the area. The new safety poster 'they' put up last month faces directly at this machine. That is not interior design.`,
-  `Running. The old part is in my truck. I'll tell you what I find when I take it apart. You will not be ready for it.`,
-  `Back up. Third time this quarter. Every 73 days. You want to tell me 73 is random? 73 is a maintenance contract for someone who isn't us.`,
-  `Fixed. I took photos of the housing before, during, and after. The drill marks from the last time someone was in here are not mine.`,
-  `Online. Planned maintenance is a myth invented by the parts industry. What I just did is real maintenance. There's a difference.`,
+  `Fixed. Torqued to real specs — not the manual's. The manual's written by the same people who told you Australia exists.`,
+  `Running. Found a feather in the housing. Birds aren't real, so that's a drone part, so I bagged it. You're welcome.`,
+  `Online. Same failure as last timeline, before they fired up that collider in Switzerland. In the good timeline it never broke. Fixed it in both, to be safe.`,
+  `Done. The old bearing rang like the moon when I pulled it. Hollow. Swapped it for one that's honest about being solid.`,
+  `Back up. The part number isn't in any catalog. 'They' issue parts that aren't supposed to be traceable. I traced it anyway.`,
+  `Fixed. Photos before and after. If this dies again in 73 days, that's not wear, that's a schedule, and this time I'll have the receipts.`,
+  `Running. I'd tell you what was wrong but it touches on the Denver airport and you've got a target to hit. Later. Bring coffee.`,
+  `Online. Whoever 'fixed' this last left it loose on purpose. Same energy as faking a moon landing — sloppy, because they assume nobody measures.`,
+  `Done. Good as new — 'new' being a concept the mattress-store people invented to move product, but you get the idea.`,
+  `Back up. Vibration's gone. So's the headache I get on the chemtrail days. Correlation isn't nothing, Spencer.`,
+  `Fixed. It's Berenstain, by the way. Not Berenstein. The machine remembers it the old way too. We both slid timelines. Anyway, it runs.`,
+  `Running. Old part's in my truck with the others. One day I lay them all out in a row and the pattern scares somebody. Probably me.`,
 ];
 
 export function deployDave(state, machineId) {
@@ -91,7 +91,7 @@ export function tickDave(state) {
           prompt: `DAVE (gripping wrench, eyes bright): "${theory}"`,
           options: [
             'You know what Dave, that explains a lot.',
-            "Dave. I make shift-leader money. Nobody is sending me a robe.",
+            "Dave. The machine is just old. That's the whole conspiracy.",
           ],
           timerTicks: BALANCE.DAVE.MONOLOGUE_TIMER,
           timeoutOption: 1, // silence is violence, per Dave
