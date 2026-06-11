@@ -19,11 +19,28 @@
 
 html, body { height: 100%; }
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(ellipse 120% 90% at 50% -10%, #181c22 0%, var(--bg) 55%, #0a0c0e 100%);
   color: var(--text);
   font-family: 'IBM Plex Mono', 'Consolas', 'Menlo', monospace;
   font-size: 13px;
   overflow: hidden;
+}
+
+/* The whole HMI lives behind glass: scanlines, an RGB aperture grille, a slow
+   flicker, and a soft tube vignette. Subtle on purpose — it's a workplace. */
+#crt {
+  position: fixed; inset: 0; pointer-events: none; z-index: 400;
+  background:
+    repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,.10) 2px 3px),
+    repeating-linear-gradient(to right,
+      rgba(255,40,70,.016) 0 1px, rgba(40,255,130,.014) 1px 2px, rgba(50,90,255,.016) 2px 3px);
+  box-shadow: inset 0 0 140px 30px rgba(0,0,0,.45);
+  animation: crt-flicker 6s steps(120) infinite;
+}
+@keyframes crt-flicker {
+  0%, 100% { opacity: 1; } 71% { opacity: 1; } 72% { opacity: .82; }
+  73% { opacity: 1; } 86% { opacity: 1; } 87% { opacity: .9; } 88% { opacity: 1; }
 }
 
 #app {
@@ -37,11 +54,22 @@ body {
 }
 
 .panel {
-  background: var(--panel);
+  background: linear-gradient(180deg, #1e2227 0%, var(--panel) 30%, #16191d 100%);
   border: 2px solid;
   border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
-  border-radius: 2px;
+  border-radius: 3px;
   padding: 6px 8px;
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 3px 8px rgba(0,0,0,.35);
+}
+/* corner screws. every real panel has them; every fake panel needs them */
+.panel::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(circle 2.5px at 6px 6px, #4a525b 35%, #1a1d21 60%, transparent 70%),
+    radial-gradient(circle 2.5px at calc(100% - 6px) 6px, #4a525b 35%, #1a1d21 60%, transparent 70%),
+    radial-gradient(circle 2.5px at 6px calc(100% - 6px), #4a525b 35%, #1a1d21 60%, transparent 70%),
+    radial-gradient(circle 2.5px at calc(100% - 6px) calc(100% - 6px), #4a525b 35%, #1a1d21 60%, transparent 70%);
 }
 
 .panel-title {
@@ -58,8 +86,10 @@ body {
 .lcd {
   font-variant-numeric: tabular-nums;
   color: var(--green);
-  background: #0c0f0c;
+  background: linear-gradient(180deg, #090c09, #0e120e 60%, #0a0d0a);
   border: 1px solid var(--bevel-lo);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.7), 0 0 6px rgba(57,211,83,.07);
+  text-shadow: 0 0 6px rgba(57,211,83,.45);
   padding: 1px 6px;
   border-radius: 2px;
 }
@@ -73,7 +103,13 @@ em { font-style: normal; color: var(--cyan); }
 #panel-a { display: flex; align-items: center; gap: 14px; }
 .brand { font-size: 12px; letter-spacing: 1px; white-space: nowrap; }
 #pace-wrap { flex: 1; display: flex; align-items: center; gap: 8px; }
-#pace-bar { flex: 1; height: 12px; background: #0c0f0c; border: 1px solid var(--bevel-lo); position: relative; }
+#pace-bar {
+  flex: 1; height: 12px; background: #0c0f0c; border: 1px solid var(--bevel-lo); position: relative;
+}
+#pace-bar::after { /* gauge graduations */
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to right, transparent 0 calc(10% - 1px), rgba(255,255,255,.12) calc(10% - 1px) 10%);
+}
 #pace-fill { height: 100%; width: 0; background: var(--cyan); transition: width .4s; }
 #pace-mark { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--amber); }
 #speed-ctl { display: flex; gap: 4px; }
@@ -88,26 +124,74 @@ em { font-style: normal; color: var(--cyan); }
 
 /* ---------------- schematic ---------------- */
 #panel-b { position: relative; display: flex; flex-direction: column; }
-#schematic { position: relative; flex: 1; overflow: hidden; }
+#schematic {
+  position: relative; flex: 1; overflow: hidden;
+  /* poured concrete with a faint expansion-joint grid and hazard striping */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.015), rgba(0,0,0,.12)),
+    repeating-linear-gradient(to right, transparent 0 79px, rgba(255,255,255,.025) 79px 80px),
+    repeating-linear-gradient(to bottom, transparent 0 59px, rgba(255,255,255,.02) 59px 60px),
+    #15181c;
+  border: 1px solid var(--bevel-lo);
+  box-shadow: inset 0 0 40px rgba(0,0,0,.45);
+}
+#schematic::after { /* hazard stripe along the floor edge */
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; z-index: 1;
+  background: repeating-linear-gradient(-45deg, #6f5a10 0 8px, #23262b 8px 16px);
+  opacity: .55; pointer-events: none;
+}
 #machine-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 10px;
+  gap: 26px 10px;
   height: calc(100% - 14px);
   padding: 8px 8px 18px;
   position: relative;
   z-index: 2;
 }
+
+/* ---- the conveyor: boards ride between the rows, at the rate you chose ---- */
+#conveyor {
+  position: absolute; left: 3%; right: 3%; top: calc(50% - 14px); height: 15px; z-index: 1;
+  background: linear-gradient(180deg, #181b20, #0d0f12);
+  border: 1px solid var(--bevel-lo); border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
+  overflow: hidden;
+}
+#conveyor::before { /* tread links */
+  content: ''; position: absolute; inset: 2px;
+  background: repeating-linear-gradient(to right, transparent 0 11px, rgba(77,208,225,.16) 11px 13px);
+  animation: tread 1s linear infinite;
+}
+@keyframes tread { to { background-position: 13px 0; } }
+#conveyor i { /* a board, fresh off the press, somewhere to be */
+  position: absolute; top: 3px; width: 24px; height: 8px; border-radius: 1px;
+  background: linear-gradient(180deg, #c8a06a, #9c744a);
+  box-shadow: 0 1px 2px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.25);
+  animation: ride var(--belt-s, 7s) linear infinite;
+}
+#conveyor i:nth-child(1) { animation-delay: calc(var(--belt-s, 7s) * -0.0); }
+#conveyor i:nth-child(2) { animation-delay: calc(var(--belt-s, 7s) * -0.2); }
+#conveyor i:nth-child(3) { animation-delay: calc(var(--belt-s, 7s) * -0.4); }
+#conveyor i:nth-child(4) { animation-delay: calc(var(--belt-s, 7s) * -0.6); }
+#conveyor i:nth-child(5) { animation-delay: calc(var(--belt-s, 7s) * -0.8); }
+@keyframes ride { from { left: -26px; } to { left: 101%; } }
+#schematic.stalled #conveyor i,
+#schematic.stalled #conveyor::before { animation-play-state: paused; }
+#schematic.stalled #conveyor { filter: brightness(.55); }
+
 .machine {
-  background: var(--panel2);
+  background: linear-gradient(180deg, #272c33 0%, var(--panel2) 35%, #1b1f24 100%);
   border: 2px solid;
   border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+  border-radius: 3px;
   padding: 6px;
   display: flex;
   flex-direction: column;
   gap: 4px;
   position: relative;
+  box-shadow: 0 3px 7px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05);
 }
 .machine .m-head { display: flex; justify-content: space-between; align-items: center; }
 .machine .m-name { font-size: 11px; letter-spacing: .5px; }
@@ -135,7 +219,8 @@ em { font-style: normal; color: var(--cyan); }
 
 /* live machine graphics — animation state derives from the status class,
    so the picture can never disagree with the engine */
-.machine .m-anim { position: absolute; right: 6px; top: 22px; width: 34px; height: 30px; pointer-events: none; opacity: .95; }
+.machine .m-anim { position: absolute; right: 6px; top: 20px; width: 42px; height: 37px; pointer-events: none; opacity: .95; filter: drop-shadow(0 2px 3px rgba(0,0,0,.4)); }
+.machine .m-anim svg { width: 100%; height: 100%; }
 .m-anim .g-spin { transform-box: fill-box; transform-origin: center; animation: g-rot 2.4s linear infinite; }
 .m-anim .g-fan { transform-box: fill-box; transform-origin: center; animation: g-rot 1.1s linear infinite; }
 .m-anim .g-belt line { animation: g-dash .9s linear infinite; }
@@ -149,6 +234,39 @@ em { font-style: normal; color: var(--cyan); }
 .machine.s-DOWN .m-anim *, .machine.s-CHRISED .m-anim *, .machine.s-REPAIRING .m-anim * { animation-play-state: paused; }
 .machine.s-DOWN .m-anim, .machine.s-CHRISED .m-anim { filter: grayscale(1) brightness(.55); }
 .machine.s-REPAIRING .m-anim { opacity: .45; }
+
+/* a downed machine throws sparks. it is upset and it wants you to know */
+.machine.s-DOWN::after, .machine.s-CHRISED::after {
+  content: ''; position: absolute; right: 12px; top: 16px; width: 24px; height: 24px;
+  pointer-events: none; z-index: 3;
+  background:
+    radial-gradient(circle 2px at 30% 45%, #ffd866 50%, transparent 65%),
+    radial-gradient(circle 1.5px at 72% 28%, #ff8c1a 50%, transparent 65%),
+    radial-gradient(circle 1.5px at 55% 72%, #ffd866 50%, transparent 65%),
+    radial-gradient(circle 1px at 18% 20%, #fff3c2 50%, transparent 65%);
+  animation: sparks .4s steps(2) infinite;
+}
+@keyframes sparks {
+  0% { transform: translate(0, 0); opacity: 1; }
+  50% { transform: translate(3px, -4px) scale(1.2); opacity: .35; }
+  100% { transform: translate(-2px, 2px); opacity: .9; }
+}
+
+/* the hot press steams while it runs. that's the "hot" part */
+#m-PRESS.s-RUNNING::after {
+  content: ''; position: absolute; right: 44px; top: 4px; width: 28px; height: 30px;
+  pointer-events: none; z-index: 3;
+  background:
+    radial-gradient(circle 5px at 30% 75%, rgba(205,215,225,.4) 40%, transparent 70%),
+    radial-gradient(circle 4px at 62% 55%, rgba(205,215,225,.32) 40%, transparent 70%),
+    radial-gradient(circle 3px at 44% 32%, rgba(205,215,225,.22) 40%, transparent 70%);
+  animation: steam 2.8s ease-in infinite;
+}
+@keyframes steam {
+  0% { transform: translateY(7px) scale(.8); opacity: 0; }
+  35% { opacity: .65; }
+  100% { transform: translateY(-12px) scale(1.25); opacity: 0; }
+}
 
 #goo {
   position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
@@ -207,6 +325,26 @@ em { font-style: normal; color: var(--cyan); }
 #spencer-sub { display: flex; justify-content: space-between; margin: 4px 0; }
 #caffeine-pips { color: var(--amber); letter-spacing: 2px; }
 #spencer-actions { display: flex; gap: 6px; }
+
+/* the trace. it speeds up when Spencer does. it never gets to stop either */
+#ekg {
+  height: 22px; margin: 2px 0 6px;
+  background: linear-gradient(180deg, #090c09, #0d100d);
+  border: 1px solid var(--bevel-lo);
+  box-shadow: inset 0 1px 4px rgba(0,0,0,.7);
+  overflow: hidden;
+}
+#ekg svg { width: 100%; height: 100%; display: block; }
+#ekg path {
+  stroke: var(--green); stroke-width: 1.6;
+  stroke-dasharray: 52 210;
+  animation: ekg 2.6s linear infinite;
+  filter: drop-shadow(0 0 3px currentColor);
+}
+@keyframes ekg { from { stroke-dashoffset: 262; } to { stroke-dashoffset: 0; } }
+body.zone-AMBER #ekg path { stroke: var(--amber); animation-duration: 1.7s; }
+body.zone-RED #ekg path { stroke: var(--red); animation-duration: 1.05s; }
+body.zone-CRITICAL #ekg path { stroke: var(--red); animation-duration: .55s; stroke-width: 2; }
 .chip { font-size: 10px; padding: 1px 8px; border-radius: 2px; color: #000; }
 .chip.green { background: var(--green); }
 .chip.amber { background: var(--amber); }
@@ -258,22 +396,34 @@ body.zone-CRITICAL #vignette { opacity: 1; animation: heartbeat 1s ease-in-out i
 .res button { grid-column: span 3; }
 .res button + button { margin-top: 0; }
 
-/* ---------------- buttons ---------------- */
+/* ---------------- buttons: industrial pushbuttons, not web buttons ---------------- */
 button.act, button.ctl {
-  background: var(--panel2);
+  background: linear-gradient(180deg, #2b3038 0%, var(--panel2) 45%, #1b1f24 100%);
   color: var(--text);
   border: 2px solid;
   border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
-  border-radius: 2px;
+  border-radius: 3px;
   font-family: inherit;
   font-size: 11px;
   padding: 4px 8px;
   cursor: pointer;
+  box-shadow: 0 2px 3px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.07);
+  transition: box-shadow .1s, transform .05s;
 }
-button.act:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
-button.act:active:not(:disabled) { border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo); }
+button.act:hover:not(:disabled) {
+  border-color: var(--cyan); color: var(--cyan);
+  box-shadow: 0 2px 6px rgba(0,0,0,.4), 0 0 8px rgba(77,208,225,.25), inset 0 1px 0 rgba(255,255,255,.07);
+}
+button.act:active:not(:disabled) {
+  border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+  transform: translateY(1px);
+  box-shadow: 0 0 2px rgba(0,0,0,.4), inset 0 2px 4px rgba(0,0,0,.45);
+}
 button:disabled { opacity: .35; cursor: not-allowed; }
-button.ctl.on { color: var(--cyan); border-color: var(--cyan); }
+button.ctl.on {
+  color: var(--cyan); border-color: var(--cyan);
+  box-shadow: 0 0 10px rgba(77,208,225,.3), inset 0 1px 0 rgba(255,255,255,.07);
+}
 button .price { color: var(--amber); font-size: 10px; }
 button.lagging { opacity: .6; cursor: wait; }
 
@@ -283,6 +433,9 @@ button.lagging { opacity: .6; cursor: wait; }
 .tline { font-size: 12px; line-height: 1.55; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tline:last-child { animation: tnew 1.4s ease-out; }
 @keyframes tnew { 0% { background: rgba(77, 208, 225, .22); } 100% { background: transparent; } }
+/* older transmissions fade like they're scrolling into the past, because they are */
+#ticker .tline:nth-last-child(n+4) { opacity: .6; }
+#ticker .tline:nth-last-child(n+6) { opacity: .35; }
 .tline .tstamp { color: var(--dim); }
 .tline.sev-WARN { color: var(--amber); }
 .tline.sev-CRIT { color: var(--red); }
@@ -299,7 +452,11 @@ button.lagging { opacity: .6; cursor: wait; }
   pointer-events: auto;
   width: 560px; max-width: 92vw;
   border-color: var(--cyan) var(--bevel-lo) var(--bevel-lo) var(--cyan);
-  box-shadow: 0 0 30px rgba(77, 208, 225, .25);
+  animation: radio-pulse 2.4s ease-in-out infinite;
+}
+@keyframes radio-pulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(77, 208, 225, .25); }
+  50% { box-shadow: 0 0 46px rgba(77, 208, 225, .45); }
 }
 #choice-prompt { padding: 8px 2px; font-size: 13px; line-height: 1.5; }
 #choice-squelch { height: 8px; background: #0c0f0c; border: 1px solid var(--bevel-lo); margin: 6px 0; }
@@ -329,6 +486,10 @@ button.lagging { opacity: .6; cursor: wait; }
   text-shadow: 0 0 18px rgba(77, 208, 225, .55); animation: intro-flicker 2.4s steps(60) infinite;
 }
 #intro-sub { font-size: 12px; letter-spacing: 4px; color: var(--green); }
+#intro-goal {
+  margin-top: 12px; font-size: 13px; letter-spacing: 2px; color: var(--amber);
+  text-shadow: 0 0 10px rgba(255, 176, 0, .5);
+}
 #intro-now { margin-top: 14px; letter-spacing: 1px; }
 #intro-skip { margin-top: 2px; opacity: .6; }
 @keyframes intro-flicker {
@@ -373,6 +534,12 @@ button.lagging { opacity: .6; cursor: wait; }
   z-index: 120; width: 480px; max-width: 90vw;
   background: #2a2415; border: 2px solid var(--amber); border-radius: 2px;
   padding: 10px 14px; box-shadow: 0 0 24px rgba(255, 176, 0, .35);
+  animation: pun-in .5s cubic-bezier(.2, 1.6, .4, 1); /* he arrives too fast and too close */
+}
+@keyframes pun-in {
+  0% { transform: translateX(-50%) translateY(-40px) scale(.92); opacity: 0; }
+  70% { transform: translateX(-50%) translateY(3px) scale(1.01); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(0) scale(1); }
 }
 #pun-toast .pun-head { font-size: 10px; color: var(--amber); letter-spacing: 1px; margin-bottom: 4px; }
 #pun-toast .pun-foot { font-size: 9px; color: var(--dim); margin-top: 6px; text-align: right; }
@@ -385,7 +552,11 @@ button.lagging { opacity: .6; cursor: wait; }
 }
 
 .big-modal { width: 640px; max-width: 94vw; max-height: 92vh; overflow-y: auto; padding: 18px 22px; }
-.big-modal h1 { color: var(--cyan); letter-spacing: 3px; }
+.big-modal h1 {
+  color: var(--cyan); letter-spacing: 6px;
+  text-shadow: 0 0 16px rgba(77, 208, 225, .5);
+  animation: intro-flicker 3.2s steps(60) infinite;
+}
 .big-modal h2 { font-size: 13px; color: var(--dim); margin: 4px 0 12px; font-weight: normal; }
 .briefing { line-height: 1.6; font-size: 13px; margin-bottom: 14px; }
 .form-row { display: flex; gap: 14px; margin: 10px 0; align-items: center; flex-wrap: wrap; }

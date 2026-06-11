@@ -27,8 +27,8 @@ npm start          # python3 -m http.server 8000
 | Who | Role | What they cost you |
 |-----|------|--------------------|
 | **Kevin** | MDF Superintendent | Un-skippable puns (+4 BP, +6 if wood-related). Locks to `HIDING` during every crisis that needs him, passing penalties to you at ×1.5. |
-| **Chris** | Maintenance Superintendent | $0* repairs. 22% chance the repair breaks a neighboring machine; 8% chance it breaks the thing he was fixing. His confidence only goes up. |
-| **Terry** | Star Millwright | $600, instant, perfect. ~9 fixes a shift before he's gone. His breaks cannot be shortened by any code path, on purpose. |
+| **Chris** | Maintenance Superintendent | $0* repairs. 22% chance the repair breaks a neighboring machine; 8% chance it breaks the thing he was fixing. Plays Candy Crush between (and during) repairs; his confidence and his level counter share one property: they only go up. |
+| **Terry** | Star Millwright | $600, instant, perfect. ~9 fixes a shift before he's gone. Fixes extra things on the walk back, unbilled. The only coworker who lowers your blood pressure. His breaks cannot be shortened by any code path, on purpose. |
 | **Dave** | Conspiracy Millwright | $400, 12 min, genuinely good. 65% chance you then have to discuss whether birds are real (they are not), whether Finland exists (it does not), or who lives under the Denver airport. Agree: +20% throughput, ×1.6 breakdown risk, permanent record. Disagree: maybe a strike. |
 | **Tod** | Peer Shift Leader, C-Crew | Deals with real headlines and hidden 40–55% defect probabilities that detonate later. His only honest trade buys your win metric. |
 

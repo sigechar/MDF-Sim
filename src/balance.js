@@ -90,6 +90,17 @@ export const BALANCE = {
     CONFIDENCE_START: 95,
     CONFIDENCE_PER_OUTCOME: 2, // outcomes do not affect this. that is the joke.
     GLUE_PER_INTERVENTION: 0.5,
+    // Candy Crush is Chris's true maintenance program. He is current on it.
+    CANDY: {
+      START_LEVEL: 4117,     // where the day shift left him
+      LEVEL_TICKS: 9,        // clears a level every ~9 idle minutes
+      MID_LEVEL_P: 0.45,     // odds he's mid-level when summoned
+      MID_LEVEL_DELAY: 4,    // he WILL finish the level (ticks)
+      PAUSE_P: 0.02,         // per on-site tick: pauses the repair to play
+      PAUSE_DELAY: 2,        // each pause costs the ETA this much
+      PAUSE_MAX: 2,          // even Chris has limits. exactly two of them.
+      MILESTONE: 50,         // announces every Nth level to an empty shop
+    },
   },
 
   TERRY: {
@@ -100,6 +111,10 @@ export const BALANCE = {
     BREAK_TICKS: 45,
     BREAK_REGEN_TO: 75,
     BREAKS_BEFORE_CLOCKOUT: 2,
+    WALKBY_P: 0.20,          // odds he fixes something extra on the walk back
+    WALKBY_HEALTH: 6,        // quietly, for free, without being asked
+    ADMIRE_P: 0.55,          // odds Spencer says the quiet part on the record
+    COFFEE_BP: 6,            // the thermos incident. relief, unprompted.
   },
 
   DAVE: {

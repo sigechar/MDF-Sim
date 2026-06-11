@@ -9,7 +9,7 @@ import { buildMachineGrid, buildCrew, buildActors, render, renderEnd } from './u
 import { startTour } from './ui/tour.js';
 
 const $ = id => document.getElementById(id);
-const SAVE_KEY = 'mdf-sim-save-v1';
+const SAVE_KEY = 'mdf-sim-save-v2'; // v2: chris.candyLevel and friends
 const SOUND_KEY = 'mdf-sim-sound';
 
 let state = null;
@@ -115,6 +115,11 @@ function playIntro(onDone) {
   const splash = $('intro-splash');
   const audio = $('intro-audio');
   if (!soundOn || !splash || !audio) { onDone(); return; }
+
+  const goalEl = $('intro-goal');
+  if (goalEl && state) {
+    goalEl.textContent = `CORPORATE'S MSF GOAL TODAY: ${BALANCE.TARGETS[state.meta.difficulty]} msf by 06:00`;
+  }
 
   let done = false;
   let timeout = null;

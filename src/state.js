@@ -62,6 +62,7 @@ export function createInitialState(seed, difficulty = 'SHIFT_LEADER') {
       chris: {
         status: 'AVAILABLE', target: null, etaTicks: 0,
         confidenceLevel: BALANCE.CHRIS.CONFIDENCE_START,
+        candyLevel: BALANCE.CHRIS.CANDY.START_LEVEL, candyPauses: 0,
       },
       terry: {
         status: 'AVAILABLE', stamina: 100, breakTicksRemaining: 0,

@@ -49,6 +49,7 @@ function optimalBot(state) {
       idx = state.npcs.dave.trustInSpencer - BALANCE.DAVE.DISAGREE_TRUST >= BALANCE.DAVE.STRIKE_BELOW_TRUST ? 1 : 0;
     } else if (c.kind === 'RESIN_LEAK') idx = 0;
     else if (c.kind === 'VENDOR_CALL') idx = 0;
+    else if (c.kind === 'CHRIS_VOLUNTEERS') idx = 0; // +3 BP is the cheapest repair Chris offers
     actions.push({ type: 'CHOICE', optionIndex: idx });
   }
 

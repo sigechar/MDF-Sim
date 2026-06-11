@@ -11,6 +11,7 @@ import {
 } from '../util.js';
 import { breakMachine } from '../engine/production.js';
 import { kevinFlee } from '../npc/kevin.js';
+import { deployChris } from '../npc/chris.js';
 
 export const INCIDENTS = [
   {
@@ -131,7 +132,7 @@ export const INCIDENTS = [
       } else {
         m.health = Math.max(1, m.health - 10);
       }
-      pushTicker(state, { speaker: 'PLANT', severity: 'WARN', text: 'Star cooler jam. The boards are stacking up hot and angry, like a queue at a pharmacy.' });
+      pushTicker(state, { speaker: 'PLANT', severity: 'WARN', text: 'Board cooler jam. The boards are stacking up hot and angry, like a queue at a pharmacy.' });
     },
   },
   {
@@ -155,6 +156,44 @@ export const INCIDENTS = [
     apply(state) {
       addBP(state, 'STRESS_PUN', 3);
       pushTicker(state, { channel: 'EMAIL', speaker: 'KEVIN', severity: 'WARN', text: 'KEVIN\'S KORNER (newsletter, unsolicited): "FUN FACT!! MDF stands for My Dear Friends... that\'s you guys!!!" It does not stand for that.' });
+    },
+  },
+  {
+    // The one recurring event in this plant that gives instead of taking.
+    key: 'TERRY_COFFEE', weight: 5, requiresAuthority: false,
+    apply(state) {
+      if (state.npcs.terry.status === 'CLOCKED_OUT') {
+        addBP(state, 'STRESS_ALARM_AMBIENT', 1);
+        pushTicker(state, { speaker: 'PLANT', text: 'You looked toward the maintenance shop out of habit. Terry is home. The plant feels 30% more flammable. +1 BP.' });
+        return;
+      }
+      addBP(state, 'RELIEF_TERRY_COFFEE', -BALANCE.TERRY.COFFEE_BP);
+      pushTicker(state, { speaker: 'PLANT', text: `There is a coffee on your desk. Thermos pour, still hot, no note. Terry is already walking away. He heard you were having a night. BP -${BALANCE.TERRY.COFFEE_BP}.` });
+    },
+  },
+  {
+    // Chris does not wait to be deployed. Chris deploys himself.
+    key: 'CHRIS_VOLUNTEERS', weight: 7, requiresAuthority: false,
+    apply(state) {
+      const c = state.npcs.chris;
+      const degraded = BALANCE.CHAIN
+        .map(id => state.plant.machines[id])
+        .filter(m => m.status === 'DEGRADED');
+      if (c.status !== 'AVAILABLE' || degraded.length === 0) {
+        addBP(state, 'STRESS_CHRIS_HELPING', 1);
+        pushTicker(state, { speaker: 'CHRIS', text: 'Chris walked the line "listening for trouble." He heard his own phone. Candy Crush. He has returned to the shop to deal with it.' });
+        return;
+      }
+      const m = pick(state, degraded);
+      const label = BALANCE.MACHINES[m.id].label;
+      pushTicker(state, { speaker: 'CHRIS', severity: 'WARN', text: `Chris has noticed the ${label} "sounds off" and is walking toward it holding a screwdriver he found.` });
+      openChoice(state, {
+        id: `chrisvol_${state.meta.tick}`, kind: 'CHRIS_VOLUNTEERS', source: 'incident', requiresAuthority: false,
+        data: { machineId: m.id },
+        prompt: `RADIO: Chris is approaching the ${label} uninvited. "I have a theory," he says. He does not. Intercepting him costs you the conversation. Letting him in costs you whatever it ends up costing.`,
+        options: ['Intercept him (+3 BP, he sulks back to Candy Crush)', `Let him "take a look" ($0*)`],
+        timerTicks: 12, timeoutOption: 1,
+      });
     },
   },
 ];
@@ -193,6 +232,19 @@ export function resolveIncidentChoice(state, choice, optionIndex) {
       } else {
         addBP(state, 'STRESS_TOD_PITCH', 1);
         pushTicker(state, { speaker: 'PLANT', text: 'You let it ring. Somewhere, a man looks at his boat and feels nothing.' });
+      }
+      break;
+    }
+    case 'CHRIS_VOLUNTEERS': {
+      const m = state.plant.machines[choice.data.machineId];
+      if (optionIndex === 0) {
+        addBP(state, 'STRESS_CHRIS_HELPING', 3);
+        pushTicker(state, { speaker: 'CHRIS', text: `You intercepted Chris. He said "your loss" and returned to level ${state.npcs.chris.candyLevel ?? BALANCE.CHRIS.CANDY.START_LEVEL}. The ${BALANCE.MACHINES[m.id].label} exhaled. Machines can do that. This one just learned.` });
+      } else if (state.npcs.chris.status === 'AVAILABLE'
+        && (m.status === 'DEGRADED' || m.status === 'DOWN' || m.status === 'CHRISED')) {
+        deployChris(state, m.id); // $0*. the gamble is the price.
+      } else {
+        pushTicker(state, { speaker: 'PLANT', text: 'The moment passed. Chris wandered back to the shop, theory unspent. The machine kept its counsel.' });
       }
       break;
     }

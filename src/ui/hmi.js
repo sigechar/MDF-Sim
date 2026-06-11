@@ -127,6 +127,17 @@ export function render(state) {
   $('goo').style.height = `${Math.min(100, state.plant.gluePileup)}%`;
   $('goo-pct').textContent = state.plant.gluePileup.toFixed(0);
 
+  // conveyor: decorative, but honest — boards ride only while the chain runs,
+  // and they ride at the speed you chose on the line rate lever
+  const sch = $('schematic');
+  if (sch) {
+    const stalled = BALANCE.CHAIN.some(id =>
+      state.plant.machines[id].status === 'DOWN' || state.plant.machines[id].status === 'CHRISED');
+    sch.classList.toggle('stalled', stalled);
+    const ri = state.plant.rateIndex ?? BALANCE.RATE.START_INDEX;
+    sch.style.setProperty('--belt-s', ['10s', '7s', '4.5s'][ri]);
+  }
+
   renderActors(state);
   renderSpencer(state);
   renderCrew(state);
@@ -166,7 +177,7 @@ function renderActors(state) {
   if (c.status === 'EN_ROUTE' || c.status === 'ON_SITE') {
     placeActor('chris', mpos(c.target, 1), { bubble: c.status === 'ON_SITE' ? 'has opened a panel' : null });
   } else if (c.status === 'EXPLAINING') placeActor('chris', { l: 46, t: 50 }, { bubble: 'whiteboard session' });
-  else placeActor('chris', ROOM.shop);
+  else placeActor('chris', ROOM.shop, { bubble: `candy crush lv ${c.candyLevel ?? BALANCE.CHRIS.CANDY.START_LEVEL}` });
 
   // TERRY — shop, machine (briefly; he's instant), break room, or gone
   const t = N.terry;
@@ -248,17 +259,20 @@ function renderCrew(state) {
     `puns delivered: ${k.punsDeliveredThisShift}`, null);
 
   const c = N.chris;
+  const candy = c.candyLevel ?? BALANCE.CHRIS.CANDY.START_LEVEL;
   set('chris',
-    c.status === 'ON_SITE' ? `ON ${c.target}` : c.status === 'EN_ROUTE' ? `EN ROUTE → ${c.target}` : c.status,
+    c.status === 'ON_SITE' ? `ON ${c.target}` : c.status === 'EN_ROUTE' ? `EN ROUTE → ${c.target}`
+      : c.status === 'AVAILABLE' ? 'IN SHOP — ON CANDY CRUSH' : c.status,
     c.status === 'AVAILABLE' ? '' : 'warn',
-    `confidence: ${c.confidenceLevel}% (only goes up)`, null);
+    `confidence: ${c.confidenceLevel}% · candy crush lv ${candy} (both only go up)`, null);
 
   const t = N.terry;
   set('terry',
     t.status === 'ON_BREAK' ? `ON BREAK (${t.breakTicksRemaining}m — un-bypassable)`
-      : t.status === 'CLOCKED_OUT' ? 'GONE HOME. quote: "No."' : t.status,
+      : t.status === 'CLOCKED_OUT' ? 'GONE HOME. quote: "No."'
+      : t.status === 'AVAILABLE' ? 'AVAILABLE (a comfort)' : t.status,
     t.status === 'AVAILABLE' ? '' : t.status === 'CLOCKED_OUT' ? 'bad' : 'warn',
-    `stamina · fixes: ${t.fixesThisShift}`, t.stamina);
+    `stamina · fixes: ${t.fixesThisShift} · billed: ${t.fixesThisShift} · owed: more`, t.stamina);
 
   const d = N.dave;
   set('dave',

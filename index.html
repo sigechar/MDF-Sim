@@ -8,6 +8,7 @@
 </head>
 <body>
 <div id="vignette"></div>
+<div id="crt" aria-hidden="true"></div>
 <div id="app">
 
   <!-- A. HEADER BAR -->
@@ -34,6 +35,7 @@
     <section id="panel-b" class="panel">
       <div class="panel-title">PLANT SCHEMATIC — LINE 1 <span id="uptime-label" class="lcd small">UPTIME 100%</span></div>
       <div id="schematic">
+        <div id="conveyor" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         <div id="machine-grid"></div>
         <div id="floor-actors"></div>
         <div id="kevin-office" class="room-label">KEVIN'S OFFICE <span id="office-light">●</span></div>
@@ -60,6 +62,11 @@
         <div id="spencer-sub">
           <span class="small dim">BLOOD PRESSURE INDEX</span>
           <span id="caffeine-pips" title="active coffees">○○○</span>
+        </div>
+        <div id="ekg" aria-hidden="true" title="the trace speeds up when you do">
+          <svg viewBox="0 0 120 24" preserveAspectRatio="none">
+            <path d="M0 13 H16 L20 13 24 5 28 20 32 13 H56 L60 13 64 5 68 20 72 13 H96 L100 13 104 5 108 20 112 13 H120" fill="none"/>
+          </svg>
         </div>
         <div id="spencer-actions">
           <button id="btn-coffee" class="act">COFFEE <span class="price">free</span></button>
@@ -180,6 +187,7 @@
     <div id="intro-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div id="intro-logo">RANGER BOARD</div>
     <div id="intro-sub">MDF DIVISION · D-CREW · SHIFT START</div>
+    <div id="intro-goal" class="small"></div>
     <div id="intro-now" class="small dim">▶ now playing — Ranger Board MDF shift tone</div>
     <div id="intro-skip" class="small dim">[ click anywhere to skip ]</div>
   </div>
